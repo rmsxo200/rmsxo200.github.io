@@ -2,10 +2,6 @@
 main:
   - title: "Quick-Start Guide"
     url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
-  - title: "그냥쓴거"
-    url: /etc/
-  - title: "DEV"
-    url: /dev/
   # - title: "About"
   #   url: https://mmistakes.github.io/minimal-mistakes/about/
   # - title: "Sample Posts"
@@ -14,3 +10,13 @@ main:
   #   url: /collection-archive/
   # - title: "Sitemap"
   #   url: /sitemap/
+
+sidebar-category:
+  - title: "카테고리"
+    children:
+      - title: "일상"
+        url: "/daily"
+      - title: "개발"
+        url:  "/dev"
+      - title: "기타"
+        url:  "/etc"
