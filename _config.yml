@@ -327,7 +327,7 @@ defaults:
       nav: "sidebar-category" # 왼쪽 카테고리 추가한 부분          
   # _pages
   - scope:
-      path: ""
+      path: "_pages"
       type: pages
     values:
       layout: single
