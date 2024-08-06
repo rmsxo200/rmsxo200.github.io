@@ -323,5 +323,6 @@ defaults:
       comments: # true
       share: true
       related: true
-      
+      sidebar:                # 왼쪽 카테고리 추가한 부분
+      nav: "sidebar-category" # 왼쪽 카테고리 추가한 부분      
       
