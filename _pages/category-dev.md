@@ -2,6 +2,8 @@
 title: "개발"
 layout: archive
 permalink: /dev
+sidebar:
+nav: "sidebar-category"
 ---
 
 {% assign posts = site.categories.dev %}
