@@ -116,7 +116,7 @@ author:
   name             : "나의 메모장"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "그냥 뭐라도 해볼라고 만든 블로그."
-  location         : "내 집"
+  location         : #"내 집"
   email            : #
   links:
     - label: "Email"
@@ -324,4 +324,12 @@ defaults:
       share: true
       related: true
       sidebar:                # 왼쪽 카테고리 추가한 부분
-      nav: "sidebar-category" # 왼쪽 카테고리 추가한 부분     
+      nav: "sidebar-category" # 왼쪽 카테고리 추가한 부분
+  # _pages
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: single
+      sidebar:                # 왼쪽 카테고리 추가한 부분
+      nav: "sidebar-category" # 왼쪽 카테고리 추가한 부분    
