@@ -2,8 +2,6 @@
 title: "기타"
 layout: archive
 permalink: /etc
-sidebar:
-  nav: "sidebar-category"
 ---
 
 {% assign posts = site.categories.etc %}
