@@ -11,7 +11,7 @@ main:
   # - title: "Sitemap"
   #   url: /sitemap/
 
-sidebar-category:
+category-list:
   - title: " - 목 록 - "
     children:
       - title: "일상"
