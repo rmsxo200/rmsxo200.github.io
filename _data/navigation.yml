@@ -16,7 +16,10 @@ category-list:
     children:
       - title: "일상"
         url: "/daily"
+        category: "daily"
       - title: "개발"
         url:  "/dev"
+        category: "dev"
       - title: "기타"
         url:  "/etc"
+        category: "etc"
