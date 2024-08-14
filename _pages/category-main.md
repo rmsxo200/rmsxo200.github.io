@@ -1,5 +1,5 @@
 ---
-title: "카테고"
+title: "카테고리"
 layout: categories
 permalink: /categories/
 ---
