@@ -1,6 +1,6 @@
 ---
 title: "일상"
-layout: archive
+layout: categories
 permalink: /daily/
 ---
 
