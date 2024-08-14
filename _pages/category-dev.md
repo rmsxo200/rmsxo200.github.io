@@ -1,7 +1,7 @@
 ---
 title: "개발"
-layout: archive
-permalink: /dev
+layout: categories
+permalink: /dev/
 ---
 
 {% assign posts = site.categories.dev %}
