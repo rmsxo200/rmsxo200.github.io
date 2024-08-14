@@ -1,7 +1,7 @@
 ---
 title: "일상"
 layout: archive
-permalink: /daily
+permalink: /categories//daily/
 ---
 
 {% assign posts = site.categories.daily %}
