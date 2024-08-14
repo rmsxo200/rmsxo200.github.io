@@ -1,6 +1,6 @@
 ---
 title: "기타"
-layout: categories
+layout: archive
 permalink: /etc
 ---
 
