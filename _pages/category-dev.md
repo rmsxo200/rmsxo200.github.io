@@ -2,6 +2,7 @@
 title: "개발"
 layout: archive
 permalink: /dev
+author_profile: true
 ---
 
 {% assign posts = site.categories.dev %}
