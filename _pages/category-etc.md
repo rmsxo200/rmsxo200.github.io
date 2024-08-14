@@ -2,6 +2,7 @@
 title: "기타"
 layout: archive
 permalink: /etc
+author_profile: true
 ---
 
 {% assign posts = site.categories.etc %}
