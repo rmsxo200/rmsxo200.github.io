@@ -28,8 +28,8 @@ repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-m
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
-breadcrumbs              : # true, false (default)
-words_per_minute         : 200
+breadcrumbs              : # true, false (default) # 브래드크럼 사용 여부 true, false (default) , _data/ui-text.yml에 다국어 지원 가능합니다.
+words_per_minute         : "200" # 해당 포스트 읽는데 걸리는 시간을 계산하기 위해 대락 분당 읽는 수가 몇글자가 될지 적는 공간.
 enable_copy_code_button  : # true, false (default)
 copyright                : # "copyright" name, defaults to site.title
 copyright_url            : # "copyright" URL, defaults to site.url
@@ -114,7 +114,7 @@ analytics:
 # Site Author
 author:
   name             : "나의 메모장"
-  avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg" # 프로필사
+  avatar           : "/imgs/profile/profile.png" # 프로필 이미지
   bio              : "그냥 뭐라도 해볼라고 만든 블로그."
   location         : #"내 집"
   email            : #
