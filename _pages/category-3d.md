@@ -1,9 +1,9 @@
 ---
-title: "3D"
+title: "Art"
 layout: archive
-permalink: /3d
+permalink: /art
 author_profile: true
 ---
 
-{% assign posts = site.categories.3d %}
+{% assign posts = site.categories.art %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}
