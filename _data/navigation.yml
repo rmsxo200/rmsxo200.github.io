@@ -22,7 +22,7 @@ category-list:
       - title: "개발"
         url:  "/dev"
         category: "dev"
-      - title: "Art"
+      - title: "그림"
         url:  "/art"
         category: "art"
       - title: "기타"
