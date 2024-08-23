@@ -1,5 +1,5 @@
 ---
-title: "Art"
+title: "그림"
 layout: archive
 permalink: /art
 author_profile: true
