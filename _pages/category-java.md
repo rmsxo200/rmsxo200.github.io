@@ -1,9 +1,9 @@
 ---
-title: "개발"
+title: "Java"
 layout: archive
-permalink: /dev
+permalink: /java
 author_profile: true
 ---
 
-{% assign posts = site.categories.dev %}
+{% assign posts = site.categories.java %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}
