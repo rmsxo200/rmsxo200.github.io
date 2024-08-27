@@ -14,17 +14,27 @@ main:
   #   url: /sitemap/
 
 category-list:
-  - title: " - 목 록 - "
+  - title: " - 개발기록 - "
+    children:
+      - title: "Java"
+        url: "/java"
+        category: "java"
+      - title: "JavaScript"
+        url: "/js"
+        category: "js"
+      - title: "알고리즘"
+        url: "/algo"
+        category: "algo"
+  - title: " - 그림기록 - "
+    children:
+      - title: "3d"
+        url:  "/3d"
+        category: "3d"
+  - title: " - 메모장 - "
     children:
       - title: "일상"
         url: "/daily"
         category: "daily"
-      - title: "개발"
-        url:  "/dev"
-        category: "dev"
-      - title: "그림"
-        url:  "/art"
-        category: "art"
       - title: "기타"
         url:  "/etc"
         category: "etc"
