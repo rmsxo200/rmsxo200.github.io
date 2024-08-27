@@ -1,5 +1,5 @@
 ---
-title: "그림"
+title: "3D"
 layout: archive
 permalink: /3d
 author_profile: true
