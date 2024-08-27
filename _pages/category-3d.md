@@ -1,9 +1,9 @@
 ---
 title: "그림"
 layout: archive
-permalink: /art
+permalink: /3d
 author_profile: true
 ---
 
-{% assign posts = site.categories.art %}
+{% assign posts = site.categories.3d %}
 {% for post in posts %} {% include archive-single.html type=page.entries_layout %} {% endfor %}
