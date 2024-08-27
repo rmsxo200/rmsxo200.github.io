@@ -23,8 +23,8 @@ category-list:
         url: "/js"
         category: "js"
       - title: "알고리즘"
-        url: "/algo"
-        category: "algo"
+        url: "/algorithm"
+        category: "algorithm"
   - title: " - 그림기록 - "
     children:
       - title: "3d"
