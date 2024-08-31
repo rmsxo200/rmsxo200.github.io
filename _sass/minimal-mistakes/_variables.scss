@@ -197,8 +197,9 @@ $small: 600px !default;
 $medium: 768px !default;
 $medium-wide: 900px !default;
 $large: 1024px !default;
-$x-large: 1500px !default;  //원래값 : 1280px
-$max-width: $x-large !default;
+$x-large: 1280px !default;  //원래 사용 변수
+$custom-large: 1500px !default;  //내가 추가한 변수
+$max-width: $custom-large !default;
 
 /*
    Grid
