@@ -126,6 +126,8 @@ blockquote {
 /* links */
 
 a {
+  text-decoration: none; /* 밑줄제거를 위해 주가 */
+  
   &:focus {
     @extend %tab-focus;
   }
