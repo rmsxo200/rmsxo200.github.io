@@ -8,21 +8,21 @@ html {
   /* apply a natural box layout model to all elements */
   box-sizing: border-box;
   background-color: $background-color;
-  font-size: 13px; // 원래값 16px
+  font-size: 13px; /* 원래값 16px */
 
-  @include breakpoint($medium) { // 원래값 : 18px
+  @include breakpoint($medium) { /* 원래값 : 18px */
     font-size: 13px;
   }
 
-  @include breakpoint($large) { //원래값 : 20px
+  @include breakpoint($large) { /* 원래값 : 20px */
     font-size: 17px;
   }
 
-  @include breakpoint($x-large) { //원래값 : 22px
+  @include breakpoint($x-large) { /* 원래값 : 22px */
     font-size: 22px;
   }
 
-  -webkit-text-size-adjust: 90%; //모바일 (원래값 : 100%)
+  -webkit-text-size-adjust: 90%; /* 모바일 (원래값 : 100%) */
   -ms-text-size-adjust: 100%;
 }
 
