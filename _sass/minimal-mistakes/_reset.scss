@@ -19,10 +19,10 @@ html {
   }
 
   @include breakpoint($x-large) { /* 원래값 : 22px */
-    font-size: 22px;
+    font-size: 19px;
   }
 
-  -webkit-text-size-adjust: 90%; /* 모바일 (원래값 : 100%) */
+  -webkit-text-size-adjust: 93%; /* 모바일 (원래값 : 100%) */
   -ms-text-size-adjust: 100%;
 }
 
