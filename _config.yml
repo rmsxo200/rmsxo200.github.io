@@ -12,7 +12,7 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 # remote_theme           : "mmistakes/minimal-mistakes"
-minimal_mistakes_skin    : "dark" # "default", "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
+minimal_mistakes_skin    : "neon" # "default", "air", "aqua", "contrast", "dark", "dirt", "neon", "mint", "plum", "sunrise"
 
 # Site Settings
 locale                   : "ko-KR" #"en-US"
@@ -68,7 +68,7 @@ reCaptcha:
 atom_feed:
   path                   : # blank (default) uses feed.xml
   hide                   : # true, false (default)
-search                   : # true, false (default) // 검색기능 
+search                   : # true, false (default) // 검색기능
 search_full_content      : # true, false (default) // 검색기능 (내용까지검색)
 search_provider          : # lunr (default), algolia, google // 검색기능
 lunr:
@@ -332,4 +332,4 @@ defaults:
     values:
       layout: single
       sidebar:                # 왼쪽 카테고리 추가한 부분
-        nav: "category-list" # 왼쪽 카테고리 추가한 부분    
+        nav: "category-list" # 왼쪽 카테고리 추가한 부분
