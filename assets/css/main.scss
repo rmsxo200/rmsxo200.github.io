@@ -10,9 +10,11 @@ search: false
 
 @font-face {
     //font-family: 'establishRoomNo703OTF';
-    font-family: 'DOSMyungjo';
     //src: url('/assets/font/establishRoomNo703OTF.woff') format('woff');
-    src: url('/assets/font/DOSMyungjo.woff') format('woff');
+    //font-family: 'DOSMyungjo';
+    //src: url('/assets/font/DOSMyungjo.woff') format('woff');
+    font-family: 'DOSIyagiMedium';
+    src: url('/assets/font/DOSIyagiMedium.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
