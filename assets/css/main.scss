@@ -9,8 +9,10 @@ search: false
 @import "minimal-mistakes"; // main partials
 
 @font-face {
-    font-family: 'establishRoomNo703OTF';
-    src: url('/assets/font/establishRoomNo703OTF.woff') format('woff');
+    //font-family: 'establishRoomNo703OTF';
+    font-family: 'DOSMyungjo';
+    //src: url('/assets/font/establishRoomNo703OTF.woff') format('woff');
+    src: url('/assets/font/DOSMyungjo.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
