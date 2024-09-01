@@ -114,7 +114,7 @@ analytics:
 # Site Author
 author:
   name             : "나의 메모장"
-  avatar           : "/assets/image/profile/profile3.gif" # 프로필 이미지
+  avatar           : "/assets/image/profile/profile2.gif" # 프로필 이미지
   bio              : "그냥 뭐라도 해볼라고 만든 블로그."
   location         : #"내 집"
   email            : #
