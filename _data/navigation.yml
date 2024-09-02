@@ -25,6 +25,9 @@ category-list:
       - title: "알고리즘"
         url: "/algorithm"
         category: "algorithm"
+      - title: "토이프로젝트"
+        url: "/toyprojects"
+        category: "toyprojects"
   - title: " - 그림기록 - "
     children:
       - title: "3d"
