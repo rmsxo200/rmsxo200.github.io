@@ -7,12 +7,11 @@ categories:
   - java
 ---
 
-### @DynamicInsert, @DynamicUpdate 쿼리실행시 변경 항목만 수정.
-JPA의 구현체인 Hibernate는 엔티티를 수정할 때 모든 컬럼의 값을 수정한다.
- 
-하지만 @DynamicInsert와 @DynamicUpdate를 사용하면 null값이 등록된 항목에 대해 sql이 실행하지 않도록 한다.
-
-예를들어 A와 B컬럼이 있을 경우 update시 엔티티에 A값이 "test" B값이 null이면 update 문 set 부분에 B에 대한 부분이 생략된다.
+# @DynamicInsert, @DynamicUpdate 쿼리실행시 변경 항목만 수정.
+  
+JPA의 구현체인 Hibernate는 엔티티를 수정할 때 모든 컬럼의 값을 수정한다.  
+하지만 @DynamicInsert와 @DynamicUpdate를 사용하면 null값이 등록된 항목에 대해 sql이 실행하지 않도록 한다.  
+예를들어 A와 B컬럼이 있을 경우 update시 엔티티에 A값이 "test" B값이 null이면 update 문 set 부분에 B에 대한 부분이 생략된다.  
 ```
 UPDATET TEST_TABLE 
     SET A = 'TEST' 
@@ -34,11 +33,11 @@ public class Member {
 <br/>
 
 ### @DynamicInsert
-    - JPA에서 insert시 엔티티의 변화가 있는 컬럼에 대해서만 SQL을 실행 
+    - JPA에서 insert시 엔티티의 변화가 있는 컬럼에 대해서만 SQL을 실행  
 <br/>
 
 ### @DynamicUpdate
-    - JPA에서 update시 엔티티의 변화가 있는 컬럼에 대해서만 SQL을 실행
+    - JPA에서 update시 엔티티의 변화가 있는 컬럼에 대해서만 SQL을 실행  
 <br/>
   
 ### JPA 사용시 모든 필드를 수정하는 이유  
