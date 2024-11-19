@@ -4,7 +4,7 @@ toc: true
 toc_sticky: true
 toc_label: "목차"
 categories:
-  - js
+  - java
 ---
 
 JPA에서 엔티티(Entity)는 관계형 데이터베이스의 테이블과 대응하며 JPA가 관리하는 클래스를 말한다.  
