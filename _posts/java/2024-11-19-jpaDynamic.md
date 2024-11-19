@@ -7,7 +7,7 @@ categories:
   - java
 ---
 
-# @DynamicInsert, @DynamicUpdate 쿼리실행시 변경 항목만 수정.
+### - @DynamicInsert, @DynamicUpdate 쿼리실행시 변경 항목만 수정 - 
   
 JPA의 구현체인 Hibernate는 엔티티를 수정할 때 모든 컬럼의 값을 수정한다.  
 하지만 @DynamicInsert와 @DynamicUpdate를 사용하면 null값이 등록된 항목에 대해 sql이 실행하지 않도록 한다.  
