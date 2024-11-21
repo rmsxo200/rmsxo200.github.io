@@ -6,11 +6,7 @@ toc_label: "목차"
 categories:
   - java
 ---
-
-# HttpClient
-  * HTTP를 사용하여 통신을 담당하는 라이브러리  
-
-<br/>
+> **HttpClient** : HTTP를 사용하여 통신을 담당하는 라이브러리  
 <br/>
 
 ### RestTemplate : 동기
