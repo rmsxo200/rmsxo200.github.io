@@ -9,7 +9,10 @@ categories:
 
 # HttpClient
   * HTTP를 사용하여 통신을 담당하는 라이브러리  
-  
+
+<br/>
+<br/>
+
 ### RestTemplate : 동기
   * 오래된 라이브러리로서 사용법이 매우 익숙하고 안정적
   * `WebClient`의 등장 이후 `RestTemplate`는 유지관리(`maintenance`) 모드에 들어가게 됨
