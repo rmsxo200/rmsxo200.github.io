@@ -1,0 +1,20 @@
+---
+# Only the main Sass file needs front matter (the dashes are enough)
+search: false
+---
+
+@charset "utf-8";
+
+@import "minimal-mistakes/skins/{{ site.minimal_mistakes_skin | default: 'default' }}"; // skin
+@import "minimal-mistakes"; // main partials
+
+@font-face {
+    //font-family: 'establishRoomNo703OTF';
+    //src: url('/assets/font/establishRoomNo703OTF.woff') format('woff');
+    //font-family: 'DOSMyungjo';
+    //src: url('/assets/font/DOSMyungjo.woff') format('woff');
+    font-family: 'DOSIyagiMedium';
+    src: url('/assets/font/DOSIyagiMedium.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}

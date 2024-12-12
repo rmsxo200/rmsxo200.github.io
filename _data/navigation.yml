@@ -1,0 +1,46 @@
+# main links
+main:
+  - title: "검색"
+    url: "/search"
+  # - title: "Quick-Start Guide"
+  #   url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
+  # - title: "About"
+  #   url: https://mmistakes.github.io/minimal-mistakes/about/
+  # - title: "Sample Posts"
+  #   url: /year-archive/
+  # - title: "Sample Collections"
+  #   url: /collection-archive/
+  # - title: "Sitemap"
+  #   url: /sitemap/
+
+category-list:
+  - title: " - 개발기록 - "
+    children:
+      - title: "Java"
+        url: "/java"
+        category: "java"
+      - title: "JavaScript"
+        url: "/js"
+        category: "js"
+      - title: "Database"
+        url: "/db"
+        category: "db"
+      - title: "알고리즘"
+        url: "/algorithm"
+        category: "algorithm"
+      - title: "토이프로젝트"
+        url: "/toyprojects"
+        category: "toyprojects"
+  - title: " - 그림기록 - "
+    children:
+      - title: "3d"
+        url:  "/3d"
+        category: "3d"
+  - title: " - 메모장 - "
+    children:
+      - title: "일상"
+        url: "/daily"
+        category: "daily"
+      - title: "기타"
+        url:  "/etc"
+        category: "etc"
