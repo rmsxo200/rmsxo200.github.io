@@ -25,14 +25,16 @@ categories:
   
 주요 메서드는 아래와 같다.  
   
-computeIfAbsent()
+<br/>  
+**computeIfAbsent()**
 * 지정된 키에 해당하는 값이 없거나 null인 경우 주어진 함수(mappingFunction)를 사용하여 값을 계산하고 맵에 저장  
 * 이미 키가 존재하면 람다식은 실행되지 않고 현재 값을 반환  
 ```
 map.computeIfAbsent("Apple", k -> 3);
 ```
   
-computeIfPresent()
+<br/>  
+**computeIfPresent()**
 * 지정된 키가 맵에 존재하고 그 값이 null이 아닌 경우 주어진 함수(mappingFunction)를 사용하여 새로운 값을 계산하고 저장  
 * mappingFunction 람다식이 null을 반환하면 해당 맵에서 제거  
 * 주어진 키에 값이 없으면 아무 일도 하지 않음  
@@ -40,7 +42,8 @@ computeIfPresent()
 map.computeIfPresent("Apple", (k, v) -> 5);
 ```
   
-compute
+<br/>  
+**compute**
 * 지정된 키에 대해 주어진 함수(mappingFunction)를 적용하여 새로운 값을 계산하고 저장  
 * 키가 존재하지 않으면 새로운 키-값 쌍을 추가  
 * 키가 존재하든 존재하지 않은 모두 처리 가능  
@@ -49,7 +52,8 @@ compute
 map.compute("Apple", (k, v) -> (v == null) ? 1 : v + 1); // 현재값이 null이면 1, 아닐경우 현재값 + 1
 ```
   
-merge
+<br/>  
+**merge**
 * 키가 존재하면 주어진 함수로 값을 병합, 없으면 새로 삽입 (신규일땐 람다식이 호출되지 않음)  
 * 키가 존재하면 기존 값과 새로운 값을 람다식을 사용하여 현재 값과 주어진 값을 병합한 결과를 저장  
 * mappingFunction 람다식이 null을 반환하면 해당 맵에서 제거  
@@ -57,7 +61,8 @@ merge
 map.merge("Apple", 1, Integer::sum);
 ```
   
-putIfAbsent
+<br/>  
+**putIfAbsent**
 * 키가 없을 때만 값을 저장  
 * 키가 이미 존재하는 경우 새 값으로 덮어쓰지 않고 기존값을 그대로 유지  
 * 키가 존재하지 않는 경우 null을 리턴하며 키가 존재하는 경우 기존 값을 리턴  
@@ -65,7 +70,8 @@ putIfAbsent
 map.putIfAbsent("Apple", 1);
 ```
   
-remove(key, value)
+<br/>  
+**remove(key, value)**
 * 키가 특정 값과 매핑된 경우에만 해당 키-값 쌍을 제거  
 * remove(key) 이렇게 사용시 일치하는 키가 있는 경우 제거  
 ```
@@ -73,7 +79,8 @@ map.remove("Apple", 0); // 제거되지 않음
 map.remove("Apple", 1); // 제거됨
 ```
   
-replace
+<br/>  
+**replace**
 * 키와 값이 특정 조건을 만족하면 값을 교체  
 * replace(key, value) 이렇게 사용시 일치하는 키가 있을 경우 변경  
 ```
