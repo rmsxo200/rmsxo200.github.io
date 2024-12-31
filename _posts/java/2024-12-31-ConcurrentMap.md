@@ -12,13 +12,15 @@ categories:
   
 주요 특징
 > 원자적 연산 지원: `putIfAbsent()`, `compute()`, `merge()`, `remove(key, value)`, `replace(key, oldValue, newValue)` 등의 원자적 메서드를 통해 동기화 없이도 원자적 연산을 수행할 수 있다.
+> 
 > null값 허용 안 함: `ConcurrentMap` 구현체들은 일반적으로 `null`을 허용하지 않는다.
   
 ### ConcurrentHashMap
 주요 구현체로는 `ConcurrentHashMap`가 있다.  
 `ConcurrentHashMap`은 내부적으로 `CAS(Compare And Swap)`연산을 사용하며 스레드가 락을 획득하거나 해제하는 과정 없이 원자적(atomic)으로 값을 변경하기 때문에 전통적인 락 메커니즘에 비해 성능이 우수하다.  
 또한 `Hashtable`이나 `Collections.synchronizedMap`보다 우수한 성능을 발휘한다.  
->  `Java 8` 이전에는 Map 전체 단위로 락을 걸지 않고 Map을 여러 세그먼트로 쪼개서 세그먼트 단위로 락을 걸어 사용  
+>  `Java 8` 이전에는 Map 전체 단위로 락을 걸지 않고 Map을 여러 세그먼트로 쪼개서 세그먼트 단위로 락을 걸어 사용
+> 
 >  `Java 8` 이후에는 세그먼트 구조를 제거하고 `CAS(Compare And Swap)`와 `synchronized` 블록을 조합하여 사용  
   
 주요 메서드는 아래와 같다.  
@@ -80,7 +82,7 @@ map.replace("Apple", 1, 10);
     
 ### 추가
 `synchronized` 는 성능이 좋지 않다고 알려져 있다.  
-내부적으로 [**모니터 락(Monitor Lock)**](https://www.geeksforgeeks.org/monitors-in-process-synchronization/)이라는 것을 사용하여 스레드 간 **상호 배제(**https://en.wikipedia.org/wiki/Mutual_exclusion**)**를 보장한다.  
+내부적으로 [**모니터 락(Monitor Lock)**](https://www.geeksforgeeks.org/monitors-in-process-synchronization/)이라는 것을 사용하여 스레드 간 [**상호 배제**](https://en.wikipedia.org/wiki/Mutual_exclusion)를 보장한다.  
 모니터 락이란 특정 객체에 대해 락을 획득하고 해제하는 JVM의 메커니즘이다.  
 `synchronized` 블록에 진입할 때 락을 획득해야 하고 블록을 빠져나갈 때 락을 해제한다.  
 이 과정에서 JVM은 다음 작업을 수행해야 한다.  
