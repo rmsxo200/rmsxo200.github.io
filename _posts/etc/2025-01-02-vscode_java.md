@@ -62,3 +62,17 @@ dependencies {
   testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 }
 ```
+  
+왼쪽의 플라스크 아이콘을 눌러 테스트를 진행할 수 있다.
+> ![이미지](/imgs/vscode/vscode_java5.png)  
+  
+저 아이콘은 빌드가 완료된 뒤에 표시 된다.  
+왼쪽 하단에 프로젝트 초기화 및 빌드가 완료된 후에 아이콘이 표시되는 것 같다.  
+> ![이미지](/imgs/vscode/vscode_java7.png)  
+  
+마우스 우클릭을 통해서도 테스트를 진행할 수 있다.  
+> ![이미지](/imgs/vscode/vscode_java8.png)  
+  
+테스트 진행시 `System.out.println`으로 출력하는게 있다면 디버그 콘솔에 출력된다.  
+> ![이미지](/imgs/vscode/vscode_java6.png)
+  
