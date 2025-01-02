@@ -52,3 +52,13 @@ dependencies {
   ...
 }
 ```
+  
+<br/>
+    
+### junit
+test할 class를 test 경로에 놓고 `build.gradle` 파일에 의존성 추가를 해주면 된다.  
+```
+dependencies {
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+}
+```
