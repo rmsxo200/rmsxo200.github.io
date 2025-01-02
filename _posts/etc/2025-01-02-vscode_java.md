@@ -9,6 +9,7 @@ categories:
 ### 플러그인 설치
 1. Extension Pack for Java  
 2. Lombok Annotations Support for VS Code  
+> ![이미지](/imgs/vscode/vscode_java1.png)  
   
 <br/>
   
@@ -16,8 +17,9 @@ categories:
 1. 커맨드 팔레트(Command Palette) 열기
    * Window: Ctrl + Shift + P  
    * Mac: Cmd + Shift + P  
-2. `create java project` 검색
+2. `create java project` 검색  
 3. 이후 빌드 도구 및 생성경로 등을 설정  
+> ![이미지](/imgs/vscode/vscode_java2.png)  
     
 <br/>
   
@@ -26,8 +28,10 @@ categories:
    * Window: Ctrl + Shift + P  
    * Mac: Cmd + Shift + P  
 2. `Configure Java Runtime`을 검색  
+> ![이미지](/imgs/vscode/vscode_java3.png)  
 3. 나타나는 창에서 `Classpath`에 `JDK Runtime` 탭에서 jdk 버전을 설정  
-4. VSCode 재시작
+> ![이미지](/imgs/vscode/vscode_java4.png)  
+4. VSCode 재시작  
 *  🧭작업공간에 Java 프로젝트가 열려있어야 설정이 가능하다🧭  
   
 <br/>
