@@ -39,6 +39,7 @@ categories:
 ### lombok설정 추가
 1. 생성된 프로젝트에 `build.gradle` 파일 열기  
 2. `dependencies` 추가
+  
 ```
 dependencies {
   ...
