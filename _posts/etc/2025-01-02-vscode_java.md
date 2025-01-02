@@ -62,7 +62,9 @@ dependencies {
   testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
 }
 ```
-
+  
+<br/>
+  
 ### 테스트 진행
 왼쪽의 플라스크 아이콘을 눌러 테스트를 진행할 수 있다.
 > ![이미지](/imgs/vscode/vscode_java5.png)  
