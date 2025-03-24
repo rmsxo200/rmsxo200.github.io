@@ -1,16 +1,19 @@
 ---
-title:  "헥사고날 아키텍처(Hexagonal architecture)와 멀티모듈"
+title:  "헥사고날 아키텍처와 멀티모듈"
 toc: true
 toc_sticky: true
 toc_label: "목차"
 categories:
   - etc
 ---
+
 헥사고날 아키텍처와 멀티모듈을 이용하여 프로젝트를 설게하려고한다.  
 각각의 기술에 대해 알아보자.  
 <br/>  
 <br/>  
+<br/>  
   
+### 헥사고날 아키텍처(Hexagonal architecture)란
 ![헥사고날 아키텍처 구조](/imgs/hexagonal/hexagonal-architecture.png)  
 <span style="font-size:90%;color:gray;">[이미지출처 : https://tech.kakaobank.com/posts/2311-hexagonal-architecture-in-messaging-hub/]</span>  
   
@@ -170,3 +173,11 @@ categories:
                          Domain Servier(Domain model)         Output Adapter계층에 구현 
 ```
   
+<br/>  
+<br/>  
+  
+🌻 마치며  
+지금까지 헥사고날 아키텍처와 멀티모듈 구조에 대해 알아보고 이를 기반으로 실제 프로젝트를 어떻게 설계할 수 있는지 살펴보았다.   
+복잡한 비즈니스 로직과 확장 가능성을 고려할 때 이와 같은 설계 방식은 유지보수성과 협업 효율성을 크게 높여줄 수 있다.   
+하지만 모든 것에 정답은 없다.   
+이 구조는 모든 프로젝트에 정답이 될 수 없으며 해당 아키텍처를 사용한다고 모든 원칙에 얽메여 획일적인 구조로 사용하기보단 `상황에 맞게` 유연하게 적용하는 것이 더 효율적이고 좋은 결과로 이어질 수도 있다!!!  
