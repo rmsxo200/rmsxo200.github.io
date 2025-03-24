@@ -7,13 +7,14 @@ categories:
   - etc
 ---
 
-헥사고날 아키텍처와 멀티모듈을 이용하여 프로젝트를 설게하려고한다.  
-각각의 기술에 대해 알아보자.  
-<br/>  
-<br/>  
 <br/>  
   
-### 헥사고날 아키텍처(Hexagonal architecture)란
+헥사고날 아키텍처와 멀티모듈을 이용하여 프로젝트를 설게하려고한다.  
+각각의 기술에 대해 알아보자.  
+  
+<br/>  
+  
+### 🌳 헥사고날 아키텍처(Hexagonal architecture)란
 ![헥사고날 아키텍처 구조](/imgs/hexagonal/hexagonal-architecture.png)  
 <span style="font-size:90%;color:gray;">[이미지출처 : https://tech.kakaobank.com/posts/2311-hexagonal-architecture-in-messaging-hub/]</span>  
   
