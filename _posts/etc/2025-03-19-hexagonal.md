@@ -1,12 +1,14 @@
 ---
-title:  "헥사고날 아키텍처 (Hexagonal architecture)"
+title:  "헥사고날 아키텍처(Hexagonal architecture)와 멀티모듈"
 toc: true
 toc_sticky: true
 toc_label: "목차"
 categories:
   - etc
 ---
-
+헥사고날 아키텍처와 멀티모듈을 이용하여 프로젝트를 설게하려고한다.  
+각각의 기술에 대해 알아보자.  
+  
 ![헥사고날 아키텍처 구조](/imgs/hexagonal/hexagonal-architecture.png)  
 <span style="font-size:90%;color:gray;">[이미지출처 : https://tech.kakaobank.com/posts/2311-hexagonal-architecture-in-messaging-hub/]</span>  
   
@@ -61,14 +63,22 @@ categories:
 > 또한 JPA의 변경 감지를 사용하지 못하게 된다.  
 > 
 > 그렇기에 도메인계층의 순수성을 너무 고집하지 않고 상황에 따라 도메인 모델과 JPA 엔티티를 분리하지 않고 사용하는 것도 방법이다.  
-
-### 멀티모듈이란
+  
+### 🌳 멀티모듈이란
 > `java`에서 `모듈`은 외부에서 재사용 할 수 있는 패키지들의 묶음이다.  
 > 하나의 루트 프로젝트 안에 여러개의 하위 `모듈`이 구성된 구조를 `멀티모듈`이라고 한다.  
 > 각 모듈은 독립적인 기능을 담당하며 필요에 따라 서로 의존할 수도 있다.  
 > 또한 각 모듈별로 `빌드` 및 `배포`가 가능하다.  
   
-### 멀티모듈을 사용하는 이유  
+### 🌳 멀티모듈 구성 방법  
+1. 도메인 단위로 구분  
+   - `마이크로서비스` 형태로 구성되는 경우 주로 사용되며 각각 모듈은 별도의 `Application`을 구성  
+   - 예) `member`, `movie`, `admin`, `payment`, `common` 등 각 도메인 별로 분리  
+  
+2. 계층 형식으로 구분  
+   - 예) `controller`, `service`, `repository` 등 각 계층별로 분리  
+   
+### 🌳 멀티모듈을 사용하는 이유  
 멀티모듈을 사용했을 때 아래와 같은 장점이 있다.  
   
 1. `재사용성` :  
@@ -96,15 +106,56 @@ categories:
 > 통제불능의 공통 모듈보다 차라리 중복 코드를 작성하는게 더 낫다는 의견이 있음    
   
   
-그럼 위에 헥사고날 아키텍처와 멀티모듈을 이용하여 프로젝트를 생성해보자.  
-   
-# 멀티모듈 구성 방법  
-1. 도메인 단위로 구분  
-   - `마이크로서비스` 형태로 구성되는 경우 주로 사용되며 각각 모듈은 별도의 `Application`을 구성  
-   - 예) `member`, `movie`, `admin`, `payment`, `common` 등 각 도메인 별로 분리  
+### 🌳 프로젝트 설계
+그럼 위에 헥사고날 아키텍처와 멀티모듈을 이용하여 프로젝트를 설계해보자.     
+아키텍처의 각 계층별로 모듈을 구성할 것이다.  
   
-2. 계층 형식으로 구분  
-   - 예) `controller`, `service`, `repository` 등 각 계층별로 분리  
+### 🌳 프로젝트 구조
+```
+  root-project
+  │
+  ├── module-domain                                 // 도메인 계층
+  │   │                                             // 핵심 비즈니스 로직과 규칙을 정의하며 외부 시스템에 의존하지 않음
+  │   ├── src/main/java/com/example/domain
+  │   │   ├── Order.java                            // 도메인 모델
+  │   │   └── service
+  │   │       └── OrderDomainService.java           // 도메인 서비스
+  │   └── build.gradle.kts
+  │
+  ├── module-application                            // 애플리케이션 계층
+  │   │                                             // 입력/출력 포트를 정의하고 애플리케이션 서비스(비즈니스 흐름)를 구현함
+  │   ├── src/main/java/com/example/application
+  │   │   ├── port
+  │   │   │   ├── in
+  │   │   │   │   └── OrderService.java             // 입력 포트 (인터페이스)
+  │   │   │   └── out
+  │   │   │       └── OrderRepositoryPort.java      // 출력 포트 (인터페이스)
+  │   │   └── service
+  │   │       └── OrderServiceImpl.java             // 애플리케이션 서비스 (입력 포트 구현체)
+  │   └── build.gradle.kts
+  │
+  ├── module-infrastructure                         // 인프라 계층
+  │   │                                             // 애플리케이션 계층의 출력 포트를 구현하며 DB, 외부 API 등 외부 시스템과 상호작용
+  │   ├── src/main/java/com/example/infrastructure
+  │   │   ├── adapter
+  │   │   │   └── OrderRepositoryAdapter.java       // 출력 포트 구현체 (DB 접근)
+  │   │   ├── entity
+  │   │   │   └── OrderEntity.java                  // JPA 엔티티 (ORM 매핑), 필요에 따라 해당 경로 없애고 도메인 모델과 통합
+  │   │   └── repository
+  │   │       └── SpringDataOrderRepository.java    // Spring Data JPA 리포지토리
+  │   └── build.gradle.kts
+  │
+  └── module-adapter                                // 어댑터 계층
+      │                                             // 외부 요청(웹, 메시지, CLI 등)을 수신하는 진입점으로 입력 포트를 호출
+      ├── src/main/java/com/example/adapter
+      │   ├── web
+      │   │   └── OrderController.java               // 웹 어댑터 (REST 컨트롤러)
+      ├── SpringBootApplication                      // Spring Boot 실행
+      └── build.gradle.kts
+```
   
-
+* 애플리케이션 계층에 출력 포트 구현체가 없는 이유
+    * 애플리케이션 계층에는 출력 포트의 인터페이스만 정의되고 출력 포트의 구현체는 인프라스트럭처 계층에 존재합니다.  
+    * 출력 포트는 외부 기술(예: DB, 메시징 시스템)에 대한 추상화로 애플리케이션 서비스가 이를 호출하여 외부 시스템과의 의존성을 최소화할 수 있도록 한다. 
+    * 이를 통해 애플리케이션 서비스는 외부 시스템의 구체적인 구현을 알 필요 없이 출력 포트 인터페이스만을 호출하여 동작한다.  
 
