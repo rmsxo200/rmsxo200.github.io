@@ -46,8 +46,27 @@ Setting up Claude Code...
 ✅ Installation complete!
 ```  
 > Claude Code 설치된 경로 : `C:\Users\사용자명\.local\bin\claude.exe`   
+  
 > 공식문서 : [https://code.claude.com/docs/ko/quickstart](https://code.claude.com/docs/ko/quickstart)   
 
+<br/>  
+  
+### 설치 후 실행 명령어
+powershell :
+```
+# 실행
+claude
+
+# 상세 모드
+# (CLI가 내부적으로 무엇을 하고 있는지 더 자세한 로그를 출력하는 모드)
+claude --verbose
+
+# 디버그 모드
+# verbose에 포함된 내용 전부 출력 + 추가 정보 출력
+# 내부 정보 노출 가능, 성능 약간 느려질 수 있음
+claude --debug
+```
+  
 <br/>  
   
 ### 환경변수 등록
