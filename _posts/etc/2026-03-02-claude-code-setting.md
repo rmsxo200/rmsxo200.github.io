@@ -65,57 +65,30 @@ Managed > User > Project Shared > Project Local
 <br/>  
   
 ### 파일 설정  
+아래는 내가 실제 적용한 파일이다.    
+  
 ```
 {
-  "autoUpdatesChannel": "latest", // 현재 공식적으로 배포된 가장 최신 안정화 버전 자동 업데이트
+  "autoUpdatesChannel": "stable", // 약 1주 지연된 안정화 버전 사용
   // "model": "claude-sonnet-4-5-20250929",  // 사용하고 싶은 모델을 설정가능하다.
   "language": "korean",
   "permissions": {
-    "allow": [ // allow에 설정한 항목은 묻지 않고 살행한다. 아닐 걍우 실행하기 전에 사용자에게 물어보고 실행한다.
-      // "Read(./**)",
-      // "Edit(./**)",            // Claude Code 실행 경로 기준 모든 파일 수정을 허용 (자동 승인)
-      // "Grep(./**)",            // Claude Code 실행 경로 기준 파일 내용 검색 허용
-      // "Glob(./**)",            // Claude Code 실행 경로 기준 파일 패턴 매칭(파일 찾기) 허용
-      // "LS(./**)",              // Claude Code 실행 경로 기준 파일 목록 확인 허용
-      "Read(C:/workspace/**)",
-      "Edit(C:/workspace/**)", // workspace 폴더 내 모든 파일 수정을 허용 (자동 승인)
-      "Grep(C:/workspace/**)", // workspace 폴더 내 파일 내용 검색 허용
-      "Glob(C:/workspace/**)", // workspace 폴더 내 파일 패턴 매칭(파일 찾기) 허용
-      "LS(C:/workspace/**)",   // workspace 폴더 내 파일 목록 확인 허용
-      "WebSearch(**)",         // 필요한 경우 인터넷 검색 허용
+    "allow": [ 
+      // allow에 설정한 항목은 묻지 않고 살행한다. 아닐 걍우 실행하기 전에 사용자에게 물어보고 실행한다.
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git add:*)",
 
-      "Bash(git add:*)",       // git 스테이징
-      "Bash(git mv:*)",        // 파일 이동/이름 변경
-      "Bash(git rm:*)",        // 파일 삭제 (git 관리 하에)
-      "Bash(git stash:*)",     // 작업 임시 저장
-      "Bash(git status:*)",     // 수정된 파일 내역 확인
-      "Bash(git diff:*)",      // 변경 사항 비교
-      "Bash(git log:*)",      // 커밋 이력 확인
-      "Bash(git show:*)",    // 커밋 정보 확인
-      
-      "Bash(ls:*)",            // 파일 목록 출력
-      "Bash(tree:*)",          // 디렉토리 구조 출력
-      "Bash(pwd:*)",           // 현재 작업 경로 확인
-      "Bash(which:*)",         // 프로그램 설치 경로 확인
+      "Bash(ls:*)",
+      "Bash(tree:*)",
+      "Bash(pwd:*)",
 
       "mcp__ide__getDiagnostics" // IDE(VS Code 등)로부터 에러/경고 정보를 가져옴
     ],
-    "deny": [ // 물어보고 실행하는 것도 허용하지 않고 완전히 차단하고 싶은 작업 목록
-      //유닉스, 리눅스, macOS
-      // "Read(~/.*)",            // 홈 디렉토리의 숨김 파일(설정 파일 등) 읽기 금지
-      // "Edit(~/.*)",            // 홈 디렉토리의 숨김 파일 수정 금지
-      // "Read(~/Library/**)",    // macOS 시스템 라이브러리 접근 금지
-      // "Edit(~/Library/**)",    // macOS 시스템 라이브러리 수정 금지
-      // "Read(~/Dropbox/**)",    // 드롭박스 동기화 폴더 접근 금지
-      // "Edit(~/Dropbox/**)",    // 드롭박스 폴더 수정 금지
-      // "Read(/etc/**)",        // 시스템 설정 디렉토리 접근 차단
-      // "Edit(/etc/**)",        // 시스템 설정 디렉토리 접근 차단
-
-      // window
-      "Read(C:/Users/**)",
-      "Edit(C:/Users/**)",
-      "Read(C:/Windows/**)",
-      "Edit(C:/Windows/**)",
+    "deny": [ 
+      // 물어보고 실행하는 것도 허용하지 않고 완전히 차단하고 싶은 작업 목록
       
       // 보안상 위험한 명령어 실행을 원천 차단
       "Bash(su:*)",            // 계정 전환 금지
@@ -151,75 +124,14 @@ Managed > User > Project Shared > Project Local
 }
 
 ```
-위 작성한 거처럼 나의 동의 없이 실행할 수 있는 항목과 절대 실행하지 않도록 설정할 수 있다.  
-아래는 내가 실제 적용한 파일이다.  
 > ❗모든 주석은 삭제하고 사용하자❗  
   
-```
-{
-  "autoUpdatesChannel": "latest",
-  "language": "korean",
-  "permissions": {
-    "allow": [
-      "Read(C:/workspace/**)",
-      "Edit(C:/workspace/**)",
-      "Grep(C:/workspace/**)",
-      "Glob(C:/workspace/**)", 
-      "LS(C:/workspace/**)", 
-      "WebSearch(**)",
-      "Bash(git add:*)",
-      "Bash(git mv:*)",
-      "Bash(git rm:*)",
-      "Bash(git stash:*)",
-      "Bash(git status:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(git show:*)",
-      "Bash(ls:*)",
-      "Bash(tree:*)",
-      "Bash(pwd:*)",
-      "Bash(which:*)",
-      "mcp__ide__getDiagnostics"
-    ],
-    "deny": [
-      "Read(C:/Users/**)",
-      "Edit(C:/Users/**)",
-      "Read(C:/Windows/**)",
-      "Edit(C:/Windows/**)",
-      "Bash(su:*)",
-      "Bash(sudo:*)",
-      "Bash(env:*)",
-      "Bash(printenv:*)",
-      "Bash(passwd:*)",
-      "Bash(history:*)",
-      "Bash(curl:*)",
-      "Bash(wget:*)",
-      "Bash(rsync:*)",
-      "Bash(scp:*)",
-      "Bash(sftp:*)",
-      "Bash(socat:*)",
-      "Bash(ssh:*)",
-      "Bash(nc:*)",
-      "Bash(ncat:*)",
-      "Bash(netcat:*)",
-      "Bash(nmap:*)",
-      "Bash(git push:*)",
-      "Bash(git commit:*)"
-    ]
-  },
-  "env": {
-    "DISABLE_BUG_COMMAND": "1",
-    "DISABLE_ERROR_REPORTING": "1",
-    "DISABLE_TELEMETRY": "1",
-    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
-  }
-}
-```
 <br/>  
 - 끝 -  
 <br/>  
 <br/> 
 <br/> 
   
-> 참고1 : https://www.daleseo.com/claude-code-settings/  
-> 참고2 : https://gist.github.com/iannuttall/a7570cee412cc05d32d7a039830f28c7  
+> 참고1 : [https://www.daleseo.com/claude-code-settings](https://www.daleseo.com/claude-code-settings/)  
+> 참고2 : [https://gist.github.com/iannuttall/a7570cee412cc05d32d7a039830f28c7](https://gist.github.com/iannuttall/a7570cee412cc05d32d7a039830f28c7)  
+> 참고3 : [https://code.claude.com/docs/ko/settings](https://code.claude.com/docs/ko/settings)
