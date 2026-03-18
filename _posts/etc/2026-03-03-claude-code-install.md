@@ -21,6 +21,10 @@ Windows CMD:
 ```
 curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
 ```
+  
+> Windows를 사용하려면 Git for Windows가 필요하다.  
+> 설치되어 있지 않다면 먼저 설치해야한다!
+> https://git-scm.com/install/windows
 <br/>  
     
 난 PowerShell을 사용해 설치했고 완료되면 아래와 같이 메시지가 표시된다.  
