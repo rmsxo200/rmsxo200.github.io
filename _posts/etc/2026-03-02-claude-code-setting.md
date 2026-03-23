@@ -100,8 +100,13 @@ claude
 
 # Claude Code 세션에서 샌드박스 활성화 ("enabled": true 상태면 자동 활성화 된다.)
 /sandbox
-```
-  
+```  
+> ❗프로젝트 폴더가 `Window 경로`에 있다면 `WSL2`에서 파일 시스템 간의 경계를 넘나들어야 해서 성능 저하가 발생할 수 있다.❗  
+> ❗`WSL2` 내부 디렉토리(~)에 두고 작업하는 것을 권장한다고 함.❗  
+> 그냥 윈도우에서 `sendbox`를 사용하지 않는 것도 괜찮을거 같다;;;  
+> 난 그냥 `PowerShell`을 사용해 `Claude Code`를 쓰고 `sendbox`는 안쓰기로 했다.  
+> 아래 설정파일엔 sendbox 활성화 설정을 넣어두긴 헀다.  
+   
 <br/>  
 
 ### 전역 settings.json  
