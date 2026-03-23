@@ -18,12 +18,13 @@ Claude Code는 스코프 시스템을 사용해서 설정이 어디에 적용되
 <br/>  
   
 ### Claude Code 설정 범위  
-| 범위 | 위치 | 영향을 받는 대상 | 팀과 공유 |
-| :--- | :--- | :--- | :--- |
-| **Managed** | 서버 관리 설정, `plist` / 레지스트리 또는 시스템 수준 `managed-settings.json` | 머신의 모든 사용자 | 예 (IT에서 배포) |
-| **User** | `~/.claude/` 디렉토리 | 모든 프로젝트에서 사용자 | 아니오 |
-| **Project** | 저장소의 `.claude/` | 이 저장소의 모든 협업자 | 예 (git에 커밋됨) |
-| **Local** | `.claude/settings.local.json` | 이 저장소에서만 사용자 | 아니오 (gitignored) |
+  
+| 범위 | 위치 | 영향을 받는 대상 | 팀과 공유 |  
+| :--- | :--- | :--- | :--- |  
+| **Managed** | 서버 관리 설정, `plist` / 레지스트리 또는 시스템 수준 `managed-settings.json` | 머신의 모든 사용자 | 예 (IT에서 배포) |  
+| **User** | `~/.claude/` 디렉토리 | 모든 프로젝트에서 사용자 | 아니오 |  
+| **Project** | 저장소의 `.claude/` | 이 저장소의 모든 협업자 | 예 (git에 커밋됨) |  
+| **Local** | `.claude/settings.local.json` | 이 저장소에서만 사용자 | 아니오 (gitignored) |  
   
 ### Managed (최상위 / 기업용)  
 IT팀이 배포하는 최상위 정책으로, 보안 정책이나 컴플라이언스 규칙처럼 모든 개발자와 프로젝트에 예외 없이 적용.  
@@ -71,7 +72,8 @@ Managed > User > Project Shared > Project Local
 <br/>  
   
 ### 파일 설정  
-`settings.json`에 `permissions.deny`도구만 사용하는게 아니라 `Sandbox`, `Hooks`을 추가로 사용해 다층방어를 할거다.  
+이제 파일을 설정해보자.  
+근데 `settings.json`에 `permissions.deny`도구만 사용하는게 아니라 `Sandbox`, `Hooks`을 추가로 사용해 다층방어를 할거다.  
 설정 파일의 대부분은 claude와 ChatGPT를 사용해 만들었다.  
    
 | 방어 계층 | 역할 | 한계 |
