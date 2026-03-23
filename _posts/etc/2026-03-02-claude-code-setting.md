@@ -82,7 +82,23 @@ Managed > User > Project Shared > Project Local
 | **Sandbox** | OS 레벨 파일시스템/네트워크 격리 | Bash 명령에만 적용 |  
 | **Hooks (PreToolUse)** | 도구 실행 직전 스크립트로 차단 | 직접 스크립트 작성 필요 |  
   
-* 위는 claude가 만들어준 표다.  
+* 위는 claude가 만들어준 표다.
+
+**Windows는 sandbox를 아직 지원하지 않는다.**  
+그래서 Windows 사용자는 WSL2를 사용해야 sendbox를 쓸 수 있다.  
+> WSL2는 Linux 커널을 그대로 사용하므로 bubblewrap 샌드박스가 정상 동작한다.
+
+```
+# PowerShell에서 WSL2 설치
+wsl --install
+
+# WSL2 내부에서 의존성 설치
+sudo apt install bubblewrap socat
+
+# Claude Code 세션에서 샌드박스 활성화 ("enabled": true 상태면 자동 활성화 된다.)
+/sandbox
+```
+  
 <br/>  
 
 ### 전역 settings.json  
