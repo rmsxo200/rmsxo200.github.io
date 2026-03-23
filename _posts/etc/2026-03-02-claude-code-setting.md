@@ -95,6 +95,9 @@ wsl --install
 # WSL2 내부에서 의존성 설치
 sudo apt install bubblewrap socat
 
+# WSL2 안에서 Claude 실행
+claude
+
 # Claude Code 세션에서 샌드박스 활성화 ("enabled": true 상태면 자동 활성화 된다.)
 /sandbox
 ```
