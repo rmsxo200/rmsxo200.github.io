@@ -75,14 +75,15 @@ Managed > User > Project Shared > Project Local
 이제 파일을 설정해보자.  
 근데 `settings.json`에 `permissions.deny`도구만 사용하는게 아니라 `Sandbox`, `Hooks`을 추가로 사용해 다층방어를 할거다.  
 설정 파일의 대부분은 claude와 ChatGPT를 사용해 만들었다.  
-   
-| 방어 계층 | 역할 | 한계 |
-| :--- | :--- | :--- |
-| **permissions.deny** | 도구 사용 전 규칙 평가 | 버그로 우회되는 사례 보고됨 |
-| **Sandbox** | OS 레벨 파일시스템/네트워크 격리 | Bash 명령에만 적용 |
-| **Hooks (PreToolUse)** | 도구 실행 직전 스크립트로 차단 | 직접 스크립트 작성 필요 |
-  * claude가 만들어준 표  
-<br/>
+     
+| 방어 계층 | 역할 | 한계 |  
+| :--- | :--- | :--- |  
+| **permissions.deny** | 도구 사용 전 규칙 평가 | 버그로 우회되는 사례 보고됨 |  
+| **Sandbox** | OS 레벨 파일시스템/네트워크 격리 | Bash 명령에만 적용 |  
+| **Hooks (PreToolUse)** | 도구 실행 직전 스크립트로 차단 | 직접 스크립트 작성 필요 |  
+  
+* 위는 claude가 만들어준 표다.  
+<br/>  
 
 ### 전역 settings.json  
 모든 프로젝트에 적용시킬 전역 설정 : `C:\Users\사용자명\.claude\settings.json`  
