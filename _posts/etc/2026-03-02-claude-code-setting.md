@@ -394,7 +394,7 @@ exit 0
 ```  
 <br/>  
   
-작 이력 로그 : `프로젝트명\.claude\hooks\activity-log.sh`  
+작업 결과 이력 로그 : `프로젝트명\.claude\hooks\activity-log.sh`  
 * 도구 실행이 완료된 후 기록 + 실제 도구가 반환한 결과 포함 + 비동기  
 ```  
 #!/usr/bin/env bash
