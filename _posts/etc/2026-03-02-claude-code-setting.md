@@ -395,7 +395,8 @@ winget install jqlang.jq
 # 리눅스 환경 (WSL2)
 chmod +x .claude/hooks/*.sh
 ```
-  
+
+<br/>  
 - 끝 -  
 <br/>  
 <br/> 
