@@ -9,7 +9,7 @@ categories:
 <br/>  
   
 > Claude Code 설치 경로 : `C:\Users\사용자명\.local\bin\claude.exe`  
-> 전역 settings.json 경로 : `C:\Users\사용자명\.claude`
+> 전역 settings.json 경로 : `C:\Users\사용자명\.claude`  
 > 프로젝트 settings.json 경로 : `C:\workspace\프로젝트명\.claude`  
   
 <br/>  
