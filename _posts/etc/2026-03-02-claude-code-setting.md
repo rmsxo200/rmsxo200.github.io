@@ -369,7 +369,8 @@ exit 0
 <br/>  
   
 Bash 명령 감사 로그 : `프로젝트명\.claude\hooks\audit-log.sh`  
-* 도구가 실행되기 직전 기록 + 실행 실패나 중단 시에도 기록이 남음  
+* 도구가 실행되기 직전 기록 + 실행 실패나 중단 시에도 기록이 남음
+  
 ```
 #!/usr/bin/env bash
 set -euo pipefail
@@ -395,7 +396,8 @@ exit 0
 <br/>  
   
 작업 결과 이력 로그 : `프로젝트명\.claude\hooks\activity-log.sh`  
-* 도구 실행이 완료된 후 기록 + 실제 도구가 반환한 결과 포함 + 비동기  
+* 도구 실행이 완료된 후 기록 + 실제 도구가 반환한 결과 포함 + 비동기
+  
 ```  
 #!/usr/bin/env bash
 set -euo pipefail
