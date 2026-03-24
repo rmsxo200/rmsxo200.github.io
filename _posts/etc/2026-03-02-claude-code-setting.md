@@ -1,5 +1,5 @@
 ---
-title:  "클로드 코드 settings.json 설정"
+title:  "클로드 코드 보안 설정"
 toc: true
 toc_sticky: true
 toc_label: "목차"
@@ -9,7 +9,8 @@ categories:
 <br/>  
   
 > Claude Code 설치 경로 : `C:\Users\사용자명\.local\bin\claude.exe`  
-> 전역 settings.json 경로 : `C:\Users\사용자명\.claude`  
+> 전역 settings.json 경로 : `C:\Users\사용자명\.claude`
+> 프로젝트 settings.json 경로 : `C:\workspace\프로젝트명\.claude`  
   
 <br/>  
 `settings.json`를 사용해 Claude Code를 설정할 수 있다.  
@@ -73,7 +74,7 @@ Managed > User > Project Shared > Project Local
   
 ### 파일 설정  
 이제 파일을 설정해보자.  
-근데 `settings.json`에 `permissions.deny`도구만 사용하는게 아니라 `Sandbox`, `Hooks`을 추가로 사용해 다층방어를 할거다.  
+`settings.json`에 `permissions.deny`도구와 `Sandbox`, `Hooks`을 사용해 다층방어를 할거다.  
 설정 파일의 대부분은 claude와 ChatGPT를 사용해 만들었다.  
      
 | 방어 계층 | 역할 | 한계 |  
@@ -381,17 +382,18 @@ jq -n \
 exit 0
 ```  
 <br/>  
-
-hook을 사용하기 위해서는 스크립트 실행 권한을 줘야한다.  
-프로젝트 경로에 들어가 아래 명령어를 입력해주자.  
-```
-chmod +x .claude/hooks/*.sh
-```
   
 추가로 윈도우에서 hook을 사용하기 위해서는 jq가 설치가 되어있어야 한다. (JSON을 다루는 CLI 도구)  
 아래 명령어로 설치하면 된다.  
 ```
 winget install jqlang.jq
+```
+  
+리눅스 환경에서는 hook을 사용하기 위해서는 스크립트 실행 권한을 줘야한다.  
+프로젝트 경로에 들어가 아래 명령어를 입력해주자.  
+```
+# 리눅스 환경 (WSL2)
+chmod +x .claude/hooks/*.sh
 ```
   
 - 끝 -  
