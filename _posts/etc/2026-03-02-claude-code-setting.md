@@ -250,7 +250,6 @@ my-project/              ← 프로젝트 루트
 ```
 {
   "hooks": {
-    // ─── 도구 실행 전 (차단 가능) ───
     "PreToolUse": [
       {
         "matcher": "",
@@ -278,6 +277,17 @@ my-project/              ← 프로젝트 루트
             "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/pre-edit-protect.sh"
           }
         ]
+      }
+    ],
+
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [{
+          "type": "command",
+          "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/activity-log.sh",
+          "async": true
+        }]
       }
     ]
   }
@@ -359,6 +369,7 @@ exit 0
 <br/>  
   
 Bash 명령 감사 로그 : `프로젝트명\.claude\hooks\audit-log.sh`  
+* 도구가 실행되기 직전 기록 + 실행 실패나 중단 시에도 기록이 남음  
 ```
 #!/usr/bin/env bash
 set -euo pipefail
@@ -377,7 +388,34 @@ jq -n \
   --arg tool "$tool" \
   --arg cmd "$cmd" \
   '{timestamp:$ts, tool:$tool, command:$cmd}' \
-  >> .claude/logs/audit.jsonl
+  >> ".claude/logs/audit-$(date +%Y-%m-%d).jsonl"
+
+exit 0
+```  
+<br/>  
+  
+작 이력 로그 : `프로젝트명\.claude\hooks\activity-log.sh`  
+* 도구 실행이 완료된 후 기록 + 실제 도구가 반환한 결과 포함 + 비동기  
+```  
+#!/usr/bin/env bash
+set -euo pipefail
+
+input=$(cat)
+
+mkdir -p .claude/logs
+
+tool_input=$(jq '(.tool_input | del(.content, .contents)) // {}' <<< "$input" 2>/dev/null || echo '{}')
+tool_response=$(jq '(.tool_response | del(.file.content, .filenames)) // null' <<< "$input" 2>/dev/null || echo 'null')
+
+jq -n \
+  --arg ts "$(date -Is)" \
+  --arg event "$(jq -r '.hook_event_name // ""' <<< "$input")" \
+  --arg tool "$(jq -r '.tool_name // ""' <<< "$input")" \
+  --arg session "$(jq -r '.session_id // ""' <<< "$input")" \
+  --argjson tool_input "$tool_input" \
+  --argjson tool_response "$tool_response" \
+  '{timestamp:$ts, event:$event, session:$session, tool:$tool, input:$tool_input, response:$tool_response}' \
+  >> ".claude/logs/activity-$(date +%Y-%m-%d).jsonl"
 
 exit 0
 ```  
