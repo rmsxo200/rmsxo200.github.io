@@ -114,8 +114,13 @@ claude
 모든 프로젝트에 적용시킬 전역 설정 : `C:\Users\사용자명\.claude\settings.json`  
 ```
 {
+  // $schema 사용시 VS Code 같은 편집기에서 자동완성과 유효성 검사를 할 수 있게한다.
+  // * 자동완성 (IntelliSense)
+  // * 타입 검사 (string, number 등)
+  // * 필수값 체크
+  // * 오타/잘못된 키 경고
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "autoUpdatesChannel": "stable",
+  "autoUpdatesChannel": "stable", // stable는 일반적으로 약 1주일 된 버전을 사용하여 문제가 있는 버전은 건너뛴다.
   "language": "korean",
 
   // ═══════════════════════════════════════
@@ -241,6 +246,7 @@ my-project/              ← 프로젝트 루트
 │   └── hooks/
 │       ├── pre-bash-firewall.sh # Bash 명령 차단
 │       ├── pre-edit-protect.sh  # 민감 파일 편집 차단
+│       ├── activity-log.sh      # 작업 결과 로그
 │       └── audit-log.sh         # Bash 명령 감사 로그
 ├── src/
 ``` 
