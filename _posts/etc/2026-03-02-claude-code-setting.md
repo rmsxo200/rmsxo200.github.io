@@ -162,19 +162,14 @@ claude
       "Bash(echo:*)", "Bash(pwd:*)", "Bash(which:*)", "Bash(whoami:*)",
 
       // 개발 도구
-      "Bash(npm run:*)", "Bash(npx:*)", "Bash(node:*)",
-      "Bash(python:*)", "Bash(python3:*)", "Bash(pip:*)",
       "Bash(git status:*)", "Bash(git diff:*)", "Bash(git log:*)",
       "Bash(git branch:*)",
 
       // 파일 빌드 도구
-      "Bash(mkdir:*)", "Bash(touch:*)",
       "Bash(tsc:*)", "Bash(eslint:*)", "Bash(prettier:*)",
 
-      // 파일 읽기/쓰기 (프로젝트 내)
-      "Read(./src/**)", "Read(./tests/**)", "Read(./docs/**)",
-      "Edit(./src/**)", "Edit(./tests/**)", "Edit(./docs/**)",
-      "Write(./src/**)", "Write(./tests/**)", "Write(./docs/**)"
+      // 파일 읽기 (프로젝트 내)
+      "Read(./src/**)", "Read(./tests/**)", "Read(./docs/**)"
     ],
 
     "ask": [ // Ask : Claude Code가 지정된 도구를 사용하려고 할 때마다 확인 요청 후 진행
@@ -184,6 +179,10 @@ claude
       "Bash(make:*)",
       "Bash(cp:*)", 
       "Bash(mv:*)",
+      "Bash(mkdir:*)", 
+      "Bash(touch:*)",
+      "Edit(./**)",
+      "Write(./**)",
       "WebFetch"
     ],
 
@@ -246,7 +245,6 @@ my-project/              ← 프로젝트 루트
 │   └── hooks/
 │       ├── pre-bash-firewall.sh # Bash 명령 차단
 │       ├── pre-edit-protect.sh  # 민감 파일 편집 차단
-│       ├── activity-log.sh      # 작업 결과 로그
 │       └── audit-log.sh         # Bash 명령 감사 로그
 ├── src/
 ``` 
@@ -262,7 +260,8 @@ my-project/              ← 프로젝트 루트
         "hooks": [
           {
             "type": "command",
-            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/audit-log.sh"
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/audit-log.sh",
+            "async": false
           }
         ]
       },
@@ -283,17 +282,6 @@ my-project/              ← 프로젝트 루트
             "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/pre-edit-protect.sh"
           }
         ]
-      }
-    ],
-
-    "PostToolUse": [
-      {
-        "matcher": "",
-        "hooks": [{
-          "type": "command",
-          "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/activity-log.sh",
-          "async": true
-        }]
       }
     ]
   }
@@ -383,47 +371,47 @@ set -euo pipefail
 
 input=$(cat)
 
-cmd=$(jq -r '.tool_input.command // ""' <<< "$input")
-tool=$(jq -r '.tool_name // ""' <<< "$input")
-timestamp=$(date -Is)
+LOG_DIR=".claude/logs"
+mkdir -p "$LOG_DIR"
 
-mkdir -p .claude/logs
+TS=$(date -Is)
+TOOL=$(jq -r '.tool_name // ""' <<< "$input")
 
-# JSON 안전하게 생성 (escape 처리)
+# =========================
+# command + fallback
+# =========================
+CMD=$(jq -r '
+  .tool_input.command //
+  .tool_input.pattern //
+  .tool_input.file_path //
+  .tool_input.path //
+  empty
+' <<< "$input" | tr '\n' ' ' | xargs)
+
+# =========================
+# target 별도 유지
+# =========================
+FILE=$(jq -r '
+  .tool_input.file_path //
+  .tool_input.path //
+  empty
+' <<< "$input")
+
+# =========================
+# 로그
+# =========================
 jq -n \
-  --arg ts "$timestamp" \
-  --arg tool "$tool" \
-  --arg cmd "$cmd" \
-  '{timestamp:$ts, tool:$tool, command:$cmd}' \
-  >> ".claude/logs/audit-$(date +%Y-%m-%d).jsonl"
-
-exit 0
-```  
-<br/>  
-  
-작업 결과 이력 로그 : `프로젝트명\.claude\hooks\activity-log.sh`  
-* 도구 실행이 완료된 후 기록 + 실제 도구가 반환한 결과 포함 + 비동기
-  
-```  
-#!/usr/bin/env bash
-set -euo pipefail
-
-input=$(cat)
-
-mkdir -p .claude/logs
-
-tool_input=$(jq '(.tool_input | del(.content, .contents)) // {}' <<< "$input" 2>/dev/null || echo '{}')
-tool_response=$(jq '(.tool_response | del(.file.content, .filenames)) // null' <<< "$input" 2>/dev/null || echo 'null')
-
-jq -n \
-  --arg ts "$(date -Is)" \
-  --arg event "$(jq -r '.hook_event_name // ""' <<< "$input")" \
-  --arg tool "$(jq -r '.tool_name // ""' <<< "$input")" \
-  --arg session "$(jq -r '.session_id // ""' <<< "$input")" \
-  --argjson tool_input "$tool_input" \
-  --argjson tool_response "$tool_response" \
-  '{timestamp:$ts, event:$event, session:$session, tool:$tool, input:$tool_input, response:$tool_response}' \
-  >> ".claude/logs/activity-$(date +%Y-%m-%d).jsonl"
+  --arg ts "$TS" \
+  --arg tool "$TOOL" \
+  --arg cmd "$CMD" \
+  --arg file "$FILE" \
+  '{
+    timestamp: $ts,
+    tool: $tool,
+    command: $cmd,
+    target: $file
+  }' \
+  >> "$LOG_DIR/audit-$(date +%Y-%m-%d).jsonl"
 
 exit 0
 ```  
