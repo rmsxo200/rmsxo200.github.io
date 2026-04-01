@@ -1,5 +1,5 @@
 ---
-title:  "클로드 코드 보안 설정"
+title:  "클로드 코드 Skills"
 toc: true
 toc_sticky: true
 toc_label: "목차"
@@ -181,6 +181,56 @@ void reserveSeat_success() {
 - 실제 로직 중심 테스트 우선
 - 가독성 최우선
 ```
+```
+<!-- 예제3 : Java 코드를 작성 및 리뷰 -->
+---
+name: java-conventions
+description: Java 프로젝트의 코딩 컨벤션 및 아키텍처 가이드. Java 코드를 작성하거나 리뷰할 때 자동으로 참조한다.
+---
+
+# Java 코딩 컨벤션
+
+## 네이밍 규칙
+- 클래스명: PascalCase (예: `OrderService`, `UserRepository`)
+- 메서드/변수명: camelCase (예: `findByUserId`, `orderCount`)
+- 상수: UPPER_SNAKE_CASE (예: `MAX_RETRY_COUNT`, `DEFAULT_TIMEOUT`)
+- 패키지명: 모두 소문자, 역도메인 (예: `com.mycompany.order.domain`)
+
+## 패키지 구조 (Layered Architecture)
+```
+com.mycompany.project
+├── controller/     # REST API 진입점 (@RestController)
+├── service/        # 비즈니스 로직 (@Service)
+├── repository/     # 데이터 접근 (@Repository)
+├── domain/         # 엔티티, VO, Enum
+├── dto/            # 요청/응답 DTO
+├── config/         # 설정 클래스 (@Configuration)
+└── exception/      # 커스텀 예외 및 핸들러
+```
+
+## Spring Boot 규칙
+- 생성자 주입만 사용한다. `@Autowired` 필드 주입 금지.
+- `@Transactional(readOnly = true)`를 조회 메서드에 항상 붙인다.
+- 컨트롤러에 비즈니스 로직을 넣지 않는다. 서비스 계층에 위임한다.
+- API 응답은 `ResponseEntity<>`로 감싸고, 공통 응답 포맷(`ApiResponse<T>`)을 사용한다.
+
+## 예외 처리
+- 비즈니스 예외는 `BusinessException`을 상속하여 만든다.
+- `@RestControllerAdvice`에서 전역으로 처리한다.
+- 절대 빈 catch 블록을 만들지 않는다.
+
+## 테스트
+- 단위 테스트: JUnit 5 + Mockito
+- 통합 테스트: `@SpringBootTest` + `@Testcontainers`
+- 테스트 메서드명: `should_기대결과_when_조건` 형식
+  (예: `should_throwException_when_userNotFound`)
+
+## 로깅
+- `@Slf4j` (Lombok) 사용
+- DEBUG: 개발 디버깅용
+- INFO: 주요 비즈니스 이벤트
+- WARN/ERROR: 예외 상황, 반드시 예외 객체를 함께 출력
+```
   
 <br/>  
   
@@ -252,6 +302,114 @@ disable-model-invocation: true
 1. 인터페이스
 2. 구현체
 3. 설명
+```
+
+```
+<!-- 예제3 : API 생성 -->
+<!-- 사용명령어 : /spring-api Order $ARGUMENTS , /spring-api Order 주문 CRUD
+---
+name: spring-api
+description: Spring Boot REST API 엔드포인트를 생성한다. CRUD API, 새로운 도메인 API를 만들 때 사용한다.
+disable-model-invocation: true
+---
+
+# Spring Boot REST API 생성 워크플로
+
+사용자가 요청한 도메인에 대해 아래 순서대로 파일을 생성한다.
+$ARGUMENTS 에서 도메인 이름과 요구사항을 파악한다.
+
+## 1단계: 도메인 엔티티 생성
+
+`domain/` 패키지에 JPA 엔티티를 만든다.
+```java
+@Entity
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "테이블명")
+public class 도메인명 {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    // 필드들...
+
+    @Builder
+    public 도메인명(파라미터들) {
+        // 생성자
+    }
+}
+```
+
+규칙:
+- `@Setter` 사용 금지. 변경은 의미 있는 메서드로 표현한다.
+- `@Builder`는 생성자에 붙인다.
+- `@NoArgsConstructor`는 `PROTECTED`로 제한한다.
+
+## 2단계: DTO 생성
+
+`dto/` 패키지에 요청/응답 DTO를 만든다.
+
+- 요청: `도메인명CreateRequest`, `도메인명UpdateRequest` → Java `record` 사용
+- 응답: `도메인명Response` → Java `record` 사용, 정적 팩토리 메서드 `from(Entity)` 포함
+```java
+public record OrderCreateRequest(
+    @NotBlank String productName,
+    @Positive int quantity
+) {}
+
+public record OrderResponse(
+    Long id,
+    String productName,
+    int quantity,
+    LocalDateTime createdAt
+) {
+    public static OrderResponse from(Order order) {
+        return new OrderResponse(
+            order.getId(),
+            order.getProductName(),
+            order.getQuantity(),
+            order.getCreatedAt()
+        );
+    }
+}
+```
+
+## 3단계: Repository 생성
+
+`repository/` 패키지에 Spring Data JPA 인터페이스를 만든다.
+```java
+public interface 도메인명Repository extends JpaRepository<도메인명, Long> {
+    // 필요한 쿼리 메서드 추가
+}
+```
+
+## 4단계: Service 생성
+
+`service/` 패키지에 서비스 클래스를 만든다.
+
+규칙:
+- 생성자 주입 (`@RequiredArgsConstructor`)
+- 조회 메서드에 `@Transactional(readOnly = true)`
+- 변경 메서드에 `@Transactional`
+- 엔티티를 찾지 못하면 커스텀 예외를 던진다
+
+## 5단계: Controller 생성
+
+`controller/` 패키지에 REST 컨트롤러를 만든다.
+
+규칙:
+- `@RestController`, `@RequestMapping("/api/v1/도메인s")`
+- 요청 DTO에 `@Valid` 붙이기
+- 생성 → `201 Created`, 조회 → `200 OK`, 삭제 → `204 No Content`
+- 컨트롤러에 로직 넣지 않기
+
+## 6단계: 검증
+
+모든 파일 생성 후:
+1. 프로젝트 컴파일 확인: `./gradlew compileJava` (또는 `mvn compile`)
+2. 컴파일 에러가 있으면 즉시 수정
+3. 생성한 파일 목록을 사용자에게 요약 보고
 ```
   
   
