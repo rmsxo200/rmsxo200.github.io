@@ -283,7 +283,7 @@ $ARGUMENTS 에서 리뷰 대상 파일 또는 범위를 파악한다.
 <!--
     호출예시 :
           /spring-api /spring-api 주문 CRUD, 도메인명 Order, 테이블명 order, 필드: productName(String), quantity(int), status(OrderStatus) 
-          /spring-api 기존 Order 도메인 사용, Service부터 Controller까지 CRUD API 생성
+          /spring-api Order 기존 도메인 사용, Service부터 Controller까지 CRUD API 생성
 -->
 ---
 name: spring-api
