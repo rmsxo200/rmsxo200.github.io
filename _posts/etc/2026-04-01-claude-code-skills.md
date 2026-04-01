@@ -1,3 +1,12 @@
+---
+title:  "클로드 코드 보안 설정"
+toc: true
+toc_sticky: true
+toc_label: "목차"
+categories:
+  - etc
+---
+
 ### Skills란  
 `Skills`는 `Claude Code`가 어떤 상황에 어떤식으로 작업할지 미리 적어둔 매뉴얼이라고 생각하면 된다.  
 `SKILL.md`라는 파일에만 정의해 두면 `Claude`가 필요할 때 자동으로 읽고 활용한다.  
@@ -78,7 +87,7 @@ description: 스킬이 무엇을 하는지, 언제 사용해야 하는지 아래
   
 ### 참조 콘텐츠 (Reference Skill) 작성 예제  
 ```
-<!-- 예제: Java 코드 스타일 & 아키텍처 가이드 -->
+<!-- 예제1: Java 코드 스타일 & 아키텍처 가이드 -->
 ---
 name: java-reference-guide
 description: Java 코드 작성 및 리뷰 시 참고하는 스타일 및 아키텍처 가이드
@@ -115,8 +124,9 @@ description: Java 코드 작성 및 리뷰 시 참고하는 스타일 및 아키
 ## 사용 방법
 이 가이드는 코드 작성, 리뷰, 리팩토링 시 참고 기준으로 사용한다.
 ```
+  
 ```
-<!-- 예제 : 테스트 코드 생성 -->
+<!-- 예제2 : 테스트 코드 생성 -->
 ---
 name: generate-test-code
 description: Java 코드 변경 시 테스트 코드를 생성하거나 기존 테스트를 보완한다
@@ -211,6 +221,7 @@ allowed-tools: Read, Grep
 
 코드는 Java 기준으로 작성한다.
 ```
+  
 ```
 <!-- 예제 2: 서비스 코드 생성 스킬 -->
 ---
