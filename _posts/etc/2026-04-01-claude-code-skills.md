@@ -63,14 +63,14 @@ description: 코드 설명을 도와줌
 name: 스킬 이름  
 description: 스킬이 무엇을 하는지, 언제 사용해야 하는지 아래에는 Claude가 따라야 할 구체적인 지침을 작성한다.  
   
+> `Claude`는 `description`을 보고 자동으로 사용할지 판단한다.  
+> 그렇기에 언제 쓰고 언제 안 쓸지 명확히 작성하는게 중요하다.  
+  
 * 추가 설정 옵션  
   * `context: fork` : 
     * 스킬이 별도의 서브에이전트(기존 대화 흐름과 분리해서 독립된 컨텍스트)에서 실행됩니다. 본 대화의 맥락을 아끼고 싶거나 이전 대화 영향 받으면 안 될 때 사용.  
   * `disable-model-invocation: true` : 
     *  Claude가 자동으로 이 스킬을 쓰지 못함. 배포처럼 위험한 작업에 권장.  
-  * `allowed-tools: Read, Grep` : 
-    *  `allowed-tools`를 정의하는 `Skills`는 `skill`이 활성화되었을 때 사용자별 승인 없이 `Claude`에게 이러한 도구에 대한 액세스를 부여.  
-    *  Read, Grep 권한을 부여하겠다는 의미.  
   
 여러개의 `skills`를 생성하는 경우 아래 구조처럼 생성하면 된다.  
 ```
@@ -383,5 +383,13 @@ public class 도메인명 {
 6. 생성한 파일 목록을 사용자에게 요약 보고
 ````
   
+<br/>  
+<br/>  
+  
+공식 문서에서는 Reference(참조)와 Action(실행)으로 구분하지만 실제로는 하나의 스킬 안에 규칙과 실행 절차가 함께 들어가는 경우가 많다.  
+스킬을 만들 때 더 중요한 판단 기준은 Claude가 알아서 적용해야 하는가 내가 직접 부를 때만 실행해야 하는가이며 이에 따라 disable-model-invocation을 설정하면 된다.  
+  
+<br/>  
+<br/>  
   
 참고 [https://code.claude.com/docs/ko/skills](https://code.claude.com/docs/ko/skills)
