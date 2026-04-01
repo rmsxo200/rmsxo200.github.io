@@ -86,8 +86,9 @@ description: 스킬이 무엇을 하는지, 언제 사용해야 하는지 아래
 <br/>  
   
 ### 참조 콘텐츠 (Reference Skill) 작성 예제  
-```
+````
 <!-- 예제1: Java 코드 스타일 & 아키텍처 가이드 -->
+<!-- ~/.claude/skills/java-reference-guide/SKILL.md -->
 ---
 name: java-reference-guide
 description: Java 코드 작성 및 리뷰 시 참고하는 스타일 및 아키텍처 가이드
@@ -123,66 +124,234 @@ description: Java 코드 작성 및 리뷰 시 참고하는 스타일 및 아키
 
 ## 사용 방법
 이 가이드는 코드 작성, 리뷰, 리팩토링 시 참고 기준으로 사용한다.
-```
+````
   
-```
+````
 <!-- 예제2 : 테스트 코드 생성 -->
+<!-- ~/.claude/skills/java-test-sync/SKILL.md -->
 ---
-name: generate-test-code
-description: Java 코드 변경 시 테스트 코드를 생성하거나 기존 테스트를 보완한다
+name: java-test-sync
+description: Java 코드에 기능이 추가되거나 수정될 때 반드시 대응하는 테스트 코드도 함께 생성하거나 수정한다. 기능 코드 변경 시 테스트 누락을 방지한다.
 ---
 
-사용자가 Java 코드 또는 변경 내용을 제공하면 테스트 코드를 작성하세요.
+# 테스트 코드 동기화 규칙
 
-## 목표
-- 기능 추가/수정에 따른 테스트 코드 생성
-- 기존 테스트 누락 케이스 보완
+기능 코드를 생성하거나 수정할 때, 반드시 대응하는 테스트 코드도 함께 생성하거나 수정한다.
+테스트 없이 기능 코드만 변경하는 것은 허용되지 않는다.
 
-## 기준
-- JUnit 5 사용
-- Mockito 사용 가능
-- given-when-then 패턴 적용
+## 핵심 원칙
 
-## 작업 순서
+- 기능 코드 1개 변경 = 테스트 코드 1개 이상 변경. 예외 없음.
+- 새 클래스를 만들면 테스트 클래스도 만든다.
+- 기존 메서드를 수정하면 해당 메서드의 테스트도 수정한다.
+- 메서드를 삭제하면 해당 테스트도 삭제한다.
+- 작업 완료 후 반드시 테스트를 실행하여 전부 통과하는지 확인한다.
 
-1. 변경 내용 분석
-- 어떤 기능이 추가/수정되었는지 파악
+## 계층별 테스트 전략
 
-2. 테스트 케이스 도출
-- 정상 케이스
-- 예외 케이스
-- 경계값 케이스
+### Controller → 슬라이스 테스트
+- `@WebMvcTest(대상Controller.class)` 사용
+- `MockMvc`로 HTTP 요청/응답 검증
+- Service는 `@MockBean`으로 모킹
+- 검증 항목: HTTP 상태 코드, 응답 JSON 구조, 요청 유효성 검증(@Valid) 동작
+```java
+@WebMvcTest(OrderController.class)
+class OrderControllerTest {
 
-3. 테스트 코드 작성
-- @DisplayName 사용
-- 테스트 메서드 명은 의미 있게 작성
+    @Autowired
+    private MockMvc mockMvc;
 
-4. 기존 테스트 보완 (필요 시)
-- 누락된 케이스 추가
+    @MockBean
+    private OrderService orderService;
 
-## 출력 형식
+    @Test
+    void should_returnCreated_when_validRequest() throws Exception {
+        // given
+        var request = new OrderCreateRequest("상품A", 3);
+        given(orderService.create(any())).willReturn(1L);
 
-1. 테스트 전략 요약
-2. 테스트 케이스 목록
-3. 전체 테스트 코드
+        // when & then
+        mockMvc.perform(post("/api/v1/orders")
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isCreated());
+    }
 
-## 예시 스타일
+    @Test
+    void should_returnBadRequest_when_productNameBlank() throws Exception {
+        // given
+        var request = new OrderCreateRequest("", 3);
 
-@Test
-@DisplayName("좌석 예매 성공")
-void reserveSeat_success() {
-    // given
-    // when
-    // then
+        // when & then
+        mockMvc.perform(post("/api/v1/orders")
+                .contentType(APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isBadRequest());
+    }
 }
+```
 
-## 추가 규칙
-- Mock 사용 최소화
-- 실제 로직 중심 테스트 우선
-- 가독성 최우선
+### Service → 단위 테스트
+- JUnit 5 + Mockito (`@ExtendWith(MockitoExtension.class)`)
+- Repository, 외부 의존성은 `@Mock`으로 모킹
+- 대상 서비스는 `@InjectMocks`
+- 검증 항목: 비즈니스 로직 분기, 예외 발생 조건, 메서드 호출 여부
+```java
+@ExtendWith(MockitoExtension.class)
+class OrderServiceTest {
+
+    @Mock
+    private OrderRepository orderRepository;
+
+    @InjectMocks
+    private OrderService orderService;
+
+    @Test
+    void should_createOrder_when_validInput() {
+        // given
+        var request = new OrderCreateRequest("상품A", 3);
+        var savedOrder = Order.builder().id(1L).productName("상품A").quantity(3).build();
+        given(orderRepository.save(any())).willReturn(savedOrder);
+
+        // when
+        Long id = orderService.create(request);
+
+        // then
+        assertThat(id).isEqualTo(1L);
+        then(orderRepository).should().save(any(Order.class));
+    }
+
+    @Test
+    void should_throwException_when_orderNotFound() {
+        // given
+        given(orderRepository.findById(999L)).willReturn(Optional.empty());
+
+        // when & then
+        assertThatThrownBy(() -> orderService.findById(999L))
+            .isInstanceOf(BusinessException.class);
+    }
+}
 ```
+
+### Repository → 통합 테스트
+- `@DataJpaTest` 사용
+- 커스텀 쿼리 메서드가 있을 때만 작성 (기본 CRUD는 생략 가능)
+- `@TestMethodOrder(OrderAnnotation.class)`로 테스트 순서 보장이 필요하면 사용
+```java
+@DataJpaTest
+class OrderRepositoryTest {
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Test
+    void should_findOrders_when_filterByProductName() {
+        // given
+        orderRepository.save(Order.builder().productName("상품A").quantity(1).build());
+        orderRepository.save(Order.builder().productName("상품B").quantity(2).build());
+
+        // when
+        List<Order> result = orderRepository.findByProductName("상품A");
+
+        // then
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getProductName()).isEqualTo("상품A");
+    }
+}
 ```
+
+### Domain (엔티티/VO) → 순수 단위 테스트
+- 프레임워크 의존 없이 순수 Java 테스트
+- 검증 항목: 생성 규칙, 상태 변경 메서드, 비즈니스 규칙 검증
+```java
+class OrderTest {
+
+    @Test
+    void should_createOrder_when_validParameters() {
+        Order order = Order.builder()
+            .productName("상품A")
+            .quantity(3)
+            .build();
+
+        assertThat(order.getProductName()).isEqualTo("상품A");
+        assertThat(order.getQuantity()).isEqualTo(3);
+    }
+
+    @Test
+    void should_throwException_when_quantityNegative() {
+        assertThatThrownBy(() -> Order.builder()
+                .productName("상품A")
+                .quantity(-1)
+                .build())
+            .isInstanceOf(IllegalArgumentException.class);
+    }
+}
+```
+
+## 테스트 메서드 네이밍 규칙
+
+`should_기대결과_when_조건` 형식을 따른다.
+
+좋은 예:
+- `should_returnOrder_when_validId`
+- `should_throwException_when_duplicateEmail`
+- `should_returnEmptyList_when_noMatchingResults`
+- `should_updateQuantity_when_validAmount`
+
+## 테스트 구조
+
+모든 테스트는 given / when / then 패턴을 따른다.
+```java
+@Test
+void should_기대결과_when_조건() {
+    // given - 테스트 데이터 준비, 모킹 설정
+
+    // when - 테스트 대상 실행
+
+    // then - 결과 검증
+}
+```
+
+## 수정 시 체크리스트
+
+기능 코드를 수정한 뒤, 아래 항목을 반드시 확인한다.
+
+1. 변경한 메서드에 대응하는 테스트가 존재하는가?
+   - 없으면 → 테스트 새로 작성
+   - 있으면 → 변경 사항을 반영하여 테스트 수정
+2. 메서드 시그니처가 변경되었는가? (파라미터, 리턴 타입)
+   - 그렇다면 → 호출하는 모든 테스트 업데이트
+3. 새로운 예외 케이스가 추가되었는가?
+   - 그렇다면 → 예외 발생 테스트 추가
+4. 분기(if/else, switch)가 추가되었는가?
+   - 그렇다면 → 각 분기에 대한 테스트 추가
+5. 모든 테스트가 통과하는가?
+   - `./gradlew test` 또는 `mvn test` 실행하여 확인
+   - 실패하면 즉시 수정
+
+## 테스트 파일 위치
+
+기능 코드와 동일한 패키지 구조를 `src/test/java` 아래에 유지한다.
+```
+src/main/java/com/mycompany/order/service/OrderService.java
+src/test/java/com/mycompany/order/service/OrderServiceTest.java
+
+src/main/java/com/mycompany/order/controller/OrderController.java
+src/test/java/com/mycompany/order/controller/OrderControllerTest.java
+```
+
+## 사용하는 라이브러리
+
+- JUnit 5: `@Test`, `@ExtendWith`, `@DisplayName`
+- AssertJ: `assertThat()`, `assertThatThrownBy()`
+- Mockito: `@Mock`, `@InjectMocks`, `given()`, `then().should()`
+- MockMvc: 컨트롤러 슬라이스 테스트
+- BDDMockito: `given()` / `then()` 스타일 사용 (when() 대신)
+````
+  
+````
 <!-- 예제3 : Java 코드를 작성 및 리뷰 -->
+<!-- ~/.claude/skills/java-conventions/SKILL.md -->
 ---
 name: java-conventions
 description: Java 프로젝트의 코딩 컨벤션 및 아키텍처 가이드. Java 코드를 작성하거나 리뷰할 때 자동으로 참조한다.
@@ -230,14 +399,15 @@ com.mycompany.project
 - DEBUG: 개발 디버깅용
 - INFO: 주요 비즈니스 이벤트
 - WARN/ERROR: 예외 상황, 반드시 예외 객체를 함께 출력
-```
+````
   
 <br/>  
   
 ### 작업콘텐츠(Action Skill) 작성 예제  
 작업콘텐츠(Action Skill) `skill`의 경우 `disable-model-invocation: true` 옵션을 추가하여 `Claude`가 자동으로 실행하는 것을 방지해야 한다.  
-```
+````
 <!-- 예제1: Java 코드 리뷰 스킬 -->
+<!-- ~/.claude/skills/review-java-code/SKILL.md -->
 ---
 name: review-java-code
 description: Java 코드를 분석하여 문제점과 개선사항을 리뷰한다
@@ -270,10 +440,11 @@ allowed-tools: Read, Grep
 - 추가 의견
 
 코드는 Java 기준으로 작성한다.
-```
+````
   
-```
+````
 <!-- 예제 2: 서비스 코드 생성 스킬 -->
+<!-- ~/.claude/skills/generate-java-service/SKILL.md -->
 ---
 name: generate-java-service
 description: 요청 기반으로 Java Service 코드를 생성한다
@@ -302,11 +473,12 @@ disable-model-invocation: true
 1. 인터페이스
 2. 구현체
 3. 설명
-```
+````
 
-```
+````
 <!-- 예제3 : API 생성 -->
-<!-- 사용명령어 : /spring-api Order $ARGUMENTS , /spring-api Order 주문 CRUD
+<!-- 사용명령어 : /spring-api Order $ARGUMENTS , /spring-api Order 주문 CRUD -->
+<!-- ~/.claude/skills/spring-api/SKILL.md -->
 ---
 name: spring-api
 description: Spring Boot REST API 엔드포인트를 생성한다. CRUD API, 새로운 도메인 API를 만들 때 사용한다.
@@ -410,7 +582,7 @@ public interface 도메인명Repository extends JpaRepository<도메인명, Long
 1. 프로젝트 컴파일 확인: `./gradlew compileJava` (또는 `mvn compile`)
 2. 컴파일 에러가 있으면 즉시 수정
 3. 생성한 파일 목록을 사용자에게 요약 보고
-```
+````
   
   
 참고 [https://code.claude.com/docs/ko/skills](https://code.claude.com/docs/ko/skills)
