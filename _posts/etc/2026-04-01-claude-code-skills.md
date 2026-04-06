@@ -28,7 +28,7 @@ categories:
    * /deploy처럼 슬래시 명령어로 직접 실행합니다.  
    * 예: 테스트 실행 → 빌드 → 배포 서버에 푸시.  
   
-<br/>  
+---
   
 ### Skills 파일 우선순위  
 `skill`을 저장하는 위치에 따라 누가 사용할 수 있는지가 결정돤다.  
@@ -49,11 +49,11 @@ categories:
   * `dev-tools`라는 플러그인에 `review`라는 스킬이 있으면 `/acme-tools:review` 아렇게 사용한다.  
   * 그렇기에 내가 만든 `skill`과 이름이 겹쳐도 충돌이 일어나지 않는다.  
   
-<br/>  
+---
   
 ### Skills 파일 작성  
 SKILL.md 파일은 Markdown 형식으로 작성한다.  
-```
+```markdown
 ---
 name: 실행코드
 description: 코드 설명을 도와줌
@@ -84,10 +84,10 @@ description: 스킬이 무엇을 하는지, 언제 사용해야 하는지 아래
         └── SKILL.md           (파일 이름은 반드시 SKILL.md)
 ```
   
-<br/>  
+---
   
 ### 참조 콘텐츠 (Reference Skill) 작성 예제  
-````
+````markdown
 <!-- 예제1 : Java 코드를 작성 및 리뷰 -->
 <!-- ~/.claude/skills/java-conventions/SKILL.md -->
 ---
@@ -128,7 +128,7 @@ dto는 dto/request, dto/response로 분리한다.
 - 문자열 비교에 ==
 ````
   
-````
+````markdown
 <!-- 예제2 : 테스트 코드 생성 -->
 <!-- ~/.claude/skills/java-test-sync/SKILL.md -->
 ---
@@ -207,11 +207,11 @@ src/test/java/com/mycompany/order/service/OrderServiceTest.java
 ```
 ````
   
-<br/>  
+---
   
 ### 작업콘텐츠(Action Skill) 작성 예제  
 작업콘텐츠(Action Skill) `skill`의 경우 `disable-model-invocation: true` 옵션을 추가하여 `Claude`가 자동으로 실행하는 것을 방지해야 한다.  
-````
+````markdown
 <!-- 예제1: Java 코드 리뷰 스킬 -->
 <!-- ~/.claude/skills/review-java-code/SKILL.md -->
 ---
@@ -273,7 +273,7 @@ $ARGUMENTS 에서 리뷰 대상 파일 또는 범위를 파악한다.
 위반 없으면 "리뷰 통과. 위반 사항 없음."으로 끝낸다.
 ````
   
-````
+````markdown
 <!-- 예제2 : API 생성 -->
 <!-- ~/.claude/skills/spring-api/SKILL.md -->
 <!--
