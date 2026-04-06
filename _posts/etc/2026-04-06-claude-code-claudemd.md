@@ -61,6 +61,8 @@ categories:
 > `CLAUDE_CODE_NEW_INIT=true`를 설정하면 대화형 다단계 흐름을 활성화할 수 있다.  
 > `/init`이 설정할 아티팩트(CLAUDE.md, skills, hooks)를 묻고, subagent로 코드베이스를 탐색한 뒤 검토 가능한 제안을 제시한다.  
   
+---
+  
 ### CLAUDE.md 작성  
 CLAUDE.md는 새로운 세션이 시작될 때마다 컨텍스트 윈도우에 로드되어 대화 토큰을 소비한다.  
 따라서 짧고 구체적이며 잘 구조화된 지침이 가장 효과적이다.  
