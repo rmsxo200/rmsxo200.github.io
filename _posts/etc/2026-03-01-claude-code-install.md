@@ -53,7 +53,7 @@ Setting up Claude Code...
   
 > 공식문서 : [https://code.claude.com/docs/ko/quickstart](https://code.claude.com/docs/ko/quickstart)   
 
-<br/>  
+---
   
 ### 설치 후 실행 명령어
 powershell :
@@ -75,7 +75,7 @@ claude --debug
 claude --resume
 ```
   
-<br/>  
+---
   
 ### 환경변수 등록
 클로드 코드 설치 후 `PowerShell`을 통해 아무 경로에서나 `claude`명령어로 클로드 코드를 실행시킬 수 있어야 한다.  
@@ -86,7 +86,7 @@ claude --resume
 3. C:\Users\사용자명\.local\bin 추가
 4. powershell 재시작 후 진행
   
-<br/>  
+---
   
 ### 삭제 명령어  
 Windows PowerShell:
@@ -104,7 +104,7 @@ rmdir /s /q "%USERPROFILE%\.local\share\claude"
   
 > 공식문서 : [https://code.claude.com/docs/ko/setup#claude-code-제거](https://code.claude.com/docs/ko/setup#claude-code-%EC%A0%9C%EA%B1%B0)  
   
-<br/>  
+---
 
 ### Claude Code 설정 및 캐시된 데이터를 제거  
 Windows PowerShell:
