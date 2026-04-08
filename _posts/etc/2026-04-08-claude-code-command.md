@@ -6,6 +6,8 @@ toc_label: "목차"
 categories:
   - etc
 ---
+
+# 🕹️
   
 ### 실행 옵션  
   
@@ -14,6 +16,10 @@ categories:
 | `claude --resume` | 이전 세션 선택하여 시작 |
 | `claude --continue` | 가장 최근 세션 이어서 시작 |
 | `claude --continue --fork-session` | 다른 방향을 시도해보기 위해 가장 최근 세션 복사 (포크) |
+| `claude --version` | 클로드 코드 버전 정보 확인 |
+| `claude update` | 클로드 코드 버전 업데이트 |
+| `claude --verbose` | 상세 모드 (CLI가 내부적으로 무엇을 하고 있는지 더 자세한 로그를 출력하는 모드) |
+| `claude --debug` | 디버그 모드 (verbose에 포함된 내용 전부 출력 + 추가 정보 출력, 내부 정보 노출 가능, 성능 약간 느려질 수 있음) |
   
 
 ### 단축키  
