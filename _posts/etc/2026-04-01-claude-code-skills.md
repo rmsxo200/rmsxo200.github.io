@@ -602,4 +602,5 @@ Skill tool 자체를 차단해버리는 문제가 발생한다.
 <br/>  
 <br/>  
   
-참고 [https://code.claude.com/docs/ko/skills](https://code.claude.com/docs/ko/skills)
+참고 [https://code.claude.com/docs/ko/skills](https://code.claude.com/docs/ko/skills)  
+[클로드 스킬 공식 가이드북 PDF (영문)](https://resources.anthropic.com/hubfs/The-Complete-Guide-to-Building-Skill-for-Claude.pdf)  
