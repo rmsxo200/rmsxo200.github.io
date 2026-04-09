@@ -1,10 +1,10 @@
 ---
-title:  "클로드 코드 CLAUDE.md"
+title:  "[Claude Code] 클로드 코드 CLAUDE.md"
 toc: true
 toc_sticky: true
 toc_label: "목차"
 categories:
-  - etc
+  - ai
 ---
 
 ### CLAUDE.md 란?  

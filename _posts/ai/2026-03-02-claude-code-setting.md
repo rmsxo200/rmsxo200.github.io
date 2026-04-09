@@ -1,10 +1,10 @@
 ---
-title:  "클로드 코드 보안 설정"
+title:  "[Claude Code] 클로드 코드 보안 설정"
 toc: true
 toc_sticky: true
 toc_label: "목차"
 categories:
-  - etc
+  - ai
 ---
 <br/>  
   

@@ -1,10 +1,10 @@
 ---
-title:  "클로드 코드 설치하기"
+title:  "[Claude Code] 클로드 코드 설치하기"
 toc: true
 toc_sticky: true
 toc_label: "목차"
 categories:
-  - etc
+  - ai
 ---
     
 나는 Window PC를 사용하므로 Window 설치를 기준 작성한다.  

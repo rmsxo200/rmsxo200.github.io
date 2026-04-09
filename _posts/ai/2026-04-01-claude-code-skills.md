@@ -1,10 +1,10 @@
 ---
-title:  "클로드 코드 Skills"
+title:  "[Claude Code] 클로드 코드 Skills"
 toc: true
 toc_sticky: true
 toc_label: "목차"
 categories:
-  - etc
+  - ai
 ---
 
 ### Skills란  

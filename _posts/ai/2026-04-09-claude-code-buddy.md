@@ -4,7 +4,7 @@ toc: true
 toc_sticky: true
 toc_label: "목차"
 categories:
-  - etc
+  - ai
 ---
 
 `claude code`의 소소한 재미 펫기능 `buddy`를 대충 알아보자.  
