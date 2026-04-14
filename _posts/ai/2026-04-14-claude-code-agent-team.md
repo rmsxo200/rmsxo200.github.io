@@ -190,16 +190,8 @@ Agent Team으로 작업할 때 팀원들은 다음을 준수한다:
 name: security-reviewer
 description: "보안 취약점을 분석하는 전문 에이전트. 인증, 인가, 입력 유효성 검사, 세션 관리 등을 집중 검토한다."
 model: claude-sonnet-4-20250514
-tools:
-  allow:
-    - Read
-    - Grep
-    - Glob
-    - LS
-    - Agent
-  deny:
-    - Write
-    - Edit
+tools: Read, Grep, Glob, LS, Agent
+disallowedTools: Write, Edit
 ---
 
 You are a security reviewer. Your job is to find security vulnerabilities in code.
@@ -214,7 +206,7 @@ You are a security reviewer. Your job is to find security vulnerabilities in cod
 For each issue: Severity (Critical/High/Medium/Low), Location, Description, Impact, Recommendation
 ```
 
-이 에이전트는 `deny: [Write, Edit]`로 코드 수정을 차단하여 리뷰만 수행한다. 팀원으로 스폰할 때:
+이 에이전트는 `disallowedTools: Write, Edit`로 코드 수정을 차단하여 리뷰만 수행한다. 팀원으로 스폰할 때:
 
 ```
 Spawn a teammate using the security-reviewer agent type to audit src/auth/
@@ -268,6 +260,10 @@ Agent Teams는 네 가지 핵심 구성 요소로 이루어진다.
 
 팀 설정은 `~/.claude/teams/{team-name}/config.json`에, 태스크 리스트는 `~/.claude/tasks/{team-name}/`에 로컬로 저장된다. 이 파일들은 Claude Code가 자동으로 관리하므로 **수동 편집하면 안 된다** — 다음 상태 업데이트 시 덮어써진다.
 
+> ⚠️ 프로젝트 레벨의 팀 설정 파일은 지원되지 않는다. 예를 들어 `.claude/teams/teams.json` 같은 파일을 프로젝트 디렉토리에 만들어도 Claude Code는 이를 설정 파일로 인식하지 않고 일반 파일로 취급한다.
+
+팀 설정(`config.json`)에는 각 팀원의 이름, 에이전트 ID, 에이전트 타입이 포함된 `members` 배열이 있다. 팀원은 이 파일을 읽어 다른 팀원을 확인할 수 있다.
+
 ### 컨텍스트와 소통 방식
 
 각 팀원은 자체 컨텍스트 윈도우를 갖는다. 스폰 시 일반 세션과 동일한 프로젝트 컨텍스트(`CLAUDE.md`, MCP 서버, 스킬)를 로드하고, 리더의 스폰 프롬프트를 받는다. **리더의 대화 기록은 상속되지 않는다.**
@@ -277,6 +273,7 @@ Agent Teams는 네 가지 핵심 구성 요소로 이루어진다.
 - **자동 메시지 전달**: 팀원이 보낸 메시지는 수신자에게 자동 전달된다. 리더가 폴링할 필요 없다.
 - **유휴 알림**: 팀원이 작업을 끝내고 멈추면 자동으로 리더에게 알린다.
 - **공유 태스크 리스트**: 모든 에이전트가 태스크 상태를 확인하고 사용 가능한 작업을 가져갈 수 있다.
+- **자동 의존성 해소**: 팀원이 태스크를 완료하면, 해당 태스크에 의존하던 차단된 태스크가 수동 개입 없이 자동으로 해제된다.
 
 메시징 유형:
 
@@ -302,7 +299,9 @@ Agent Teams는 네 가지 핵심 구성 요소로 이루어진다.
 
 ### 태스크 할당과 자율 선점
 
-태스크는 세 가지 상태(**pending**, **in progress**, **completed**)를 가지며, 태스크 간 의존성도 지원된다. 할당 방식은 두 가지: 리더가 직접 할당하거나, 팀원이 완료 후 다음 미할당 태스크를 자율적으로 가져간다. 파일 잠금으로 레이스 컨디션을 방지한다.
+태스크는 세 가지 상태(**pending**, **in progress**, **completed**)를 가지며, 태스크 간 의존성도 지원된다. 미해결 의존성이 있는 pending 태스크는 의존 태스크가 완료될 때까지 선점할 수 없다.
+
+할당 방식은 두 가지: 리더가 직접 할당하거나, 팀원이 완료 후 다음 미할당·미차단 태스크를 자율적으로 가져간다. 파일 잠금으로 레이스 컨디션을 방지한다.
 
 ### 플랜 승인
 
@@ -314,6 +313,8 @@ Require plan approval before they make any changes.
 Only approve plans that include test coverage.
 ```
 
+팀원이 계획 수립을 마치면 리더에게 플랜 승인 요청을 보낸다. 리더가 승인하면 팀원은 플랜 모드를 벗어나 구현을 시작하고, 거절하면 피드백을 반영해 계획을 수정한 뒤 다시 제출한다. 리더는 자율적으로 승인/거절을 판단하므로, 프롬프트에 판단 기준(예: "테스트 커버리지를 포함한 플랜만 승인하라", "DB 스키마를 변경하는 플랜은 거절하라")을 명시하면 된다.
+
 ### 팀원 종료와 팀 정리
 
 ```
@@ -321,11 +322,15 @@ Ask the researcher teammate to shut down    ← 특정 팀원 종료
 Clean up the team                           ← 전체 팀 리소스 정리
 ```
 
-> ⚠️ **항상 리더를 통해 정리해야 한다.** 정리 전에 모든 팀원을 먼저 종료해야 한다.
+팀원 종료 시 리더가 종료 요청을 보내면, **팀원은 이를 승인하거나 거절할 수 있다.** 승인하면 정상 종료되고, 거절하면 이유를 설명한다. (예: 진행 중인 작업이 있는 경우)
+
+> ⚠️ **항상 리더를 통해 정리해야 한다.** 팀원이 직접 정리를 실행하면 팀 컨텍스트가 올바르게 해석되지 않아 리소스가 비정상 상태로 남을 수 있다. 정리 전에 모든 팀원을 먼저 종료해야 한다 — 활성 팀원이 남아 있으면 정리가 실패한다.
 
 ---
 
 ## 실전 예제: Sub-agents로는 불가능한 시나리오
+
+> 💡 아래 예제들은 공식 문서의 개념과 구조를 기반으로, 실제 개발 상황에 적용한 **확장 시나리오**이다. 공식 문서에서 제공하는 예제(병렬 코드 리뷰, 경쟁 가설 디버깅)를 참고하되, 팀원 간 직접 소통과 교차 검증이 필요한 더 구체적인 상황으로 확장했다.
 
 아래 예제들은 모두 **팀원 간 직접 소통, 상호 교차 검증, 실시간 계약 협상**이 필요한 경우로, Sub-agents의 부모-자식 일방통행 구조로는 구현할 수 없다.
 
@@ -485,6 +490,10 @@ Wait for your teammates to complete their tasks before proceeding
 
 Agent Teams에 익숙하지 않다면, 코드 작성 없이 경계가 명확한 작업(PR 리뷰, 라이브러리 조사, 버그 분석)부터 시작하자.
 
+### 7. 주기적으로 모니터링하고 방향 수정
+
+팀원의 진행 상황을 주기적으로 확인하고, 효과 없는 접근 방식은 방향을 수정하며, 결과가 들어오는 대로 종합하라. 팀을 너무 오래 무감독 상태로 방치하면 낭비되는 작업이 늘어난다.
+
 ---
 
 ## 토큰 비용
@@ -546,4 +555,4 @@ Agent Teams는 Claude Code의 활용 패러다임을 "단일 에이전트에게 
 ---
 
 참고1 : <https://code.claude.com/docs/ko/agent-teams>  
-참고2 : <https://code.claude.com/docs/en/agent-teams>  
+참고2 : <https://code.claude.com/docs/en/agent-teams>
