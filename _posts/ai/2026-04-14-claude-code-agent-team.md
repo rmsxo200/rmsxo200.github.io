@@ -78,29 +78,17 @@ Agent Teams가 시작되는 경로는 두 가지다.
 {
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-  },
-  "permissions": {
-    "allow": [
-      "Read",
-      "Grep",
-      "Glob",
-      "LS"
-    ]
   }
 }
 ```
 
-> 💡 `permissions.allow`에 읽기 계열 도구를 미리 허용해두면, 팀원이 코드를 탐색할 때마다 권한 요청이 올라오는 것을 줄일 수 있다. 팀원의 권한 요청은 리더로 올라오기 때문에, 사전 허용 없이는 권한 팝업이 계속 발생한다.
-
 **방법 B — 셸 환경변수**
 
-셸 프로필(`~/.bashrc`, `~/.zshrc` 등)에 추가한다:
+공식 문서에 따르면, 셸 환경에서 환경변수를 설정하는 것도 가능하다:
 
 ```bash
 export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 ```
-
-변경 후 `source ~/.zshrc` (또는 해당 셸 프로필)로 적용한다.
 
 ### Step 2: 디스플레이 모드 설정
 
@@ -111,8 +99,6 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
   "teammateMode": "auto"
 }
 ```
-
-> 📁 `~/.claude.json`은 Claude Code가 자동 생성하는 파일이다. 이미 존재하면 `teammateMode` 키만 추가하면 된다.
 
 선택 가능한 값:
 
@@ -130,16 +116,18 @@ claude --teammate-mode in-process
 
 **Split-pane 모드를 사용하려면:**
 
-- **tmux**: 시스템 패키지 매니저로 설치 (macOS에서 가장 안정적)
-- **iTerm2**: `it2` CLI를 설치하고, iTerm2 → Settings → General → Magic → Enable Python API를 활성화
+- **tmux**: 시스템의 패키지 매니저를 통해 설치한다. 플랫폼별 지침은 [tmux wiki](https://github.com/tmux/tmux/wiki/Installing)를 참조한다.
+- **iTerm2**: [`it2` CLI](https://github.com/mkusaka/it2)를 설치한 후, iTerm2 → Settings → General → Magic → Enable Python API를 활성화한다.
 
-> 💡 macOS에서는 iTerm2에서 `tmux -CC` 명령으로 시작하는 것이 공식적으로 권장되는 진입점이다.
+> 💡 공식 문서에 따르면 tmux는 특정 운영체제에서 알려진 제한 사항이 있으며, 전통적으로 macOS에서 가장 잘 동작한다. iTerm2에서 `tmux -CC`를 사용하는 것이 권장되는 진입점이다.
 
-### Step 3: 프로젝트에 CLAUDE.md 작성 (선택사항이지만 강력 권장)
+> ⚠️ Split-pane 모드는 VS Code 통합 터미널, Windows Terminal, Ghostty에서는 지원되지 않는다.
 
-팀원은 스폰 시 작업 디렉토리의 `CLAUDE.md`를 자동으로 로드한다. Agent Team 전용 가이드라인을 여기에 명시하면 팀원 간 충돌을 예방하고 품질을 높일 수 있다.
+### Step 3: 프로젝트에 CLAUDE.md 작성 (선택사항)
 
-프로젝트 루트에 `CLAUDE.md` 파일을 생성하거나 기존 파일에 다음 섹션을 추가한다:
+팀원은 스폰 시 작업 디렉토리의 `CLAUDE.md`를 자동으로 로드한다. 공식 문서에 따르면 이를 통해 모든 팀원에게 프로젝트별 가이드를 제공할 수 있다.
+
+프로젝트 루트에 `CLAUDE.md` 파일을 생성하거나 기존 파일에 Agent Team 관련 섹션을 추가한다. 아래는 작성 예시이다:
 
 ```markdown
 ## Agent Team Guidelines
@@ -155,9 +143,9 @@ Agent Team으로 작업할 때 팀원들은 다음을 준수한다:
 
 ### Step 4: 재사용할 에이전트 정의 (선택사항)
 
-자주 쓰는 역할은 Sub-agent 정의 파일로 만들어두면, Agent Team 팀원으로 스폰할 때 이름만 지정하면 된다. `~/.claude/agents/` (사용자 레벨) 또는 프로젝트의 `.claude/agents/` (프로젝트 레벨)에 `.md` 파일로 저장한다.
+자주 쓰는 역할은 Sub-agent 정의 파일로 만들어두면, Agent Team 팀원으로 스폰할 때 이름만 지정하면 된다. 공식 문서에 따르면 프로젝트, 사용자, 플러그인, CLI 등 어떤 스코프의 Sub-agent든 참조 가능하며, 해당 Sub-agent의 시스템 프롬프트, 도구, 모델을 팀원이 그대로 상속받는다.
 
-**보안 리뷰어 에이전트 예시** — `~/.claude/agents/security-reviewer.md`:
+아래는 보안 리뷰어 에이전트의 작성 예시이다 — `~/.claude/agents/security-reviewer.md`:
 
 ```markdown
 ---
@@ -214,17 +202,6 @@ Spawn a teammate using the security-reviewer agent type to audit src/auth/
           }
         ]
       }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "osascript -e 'display notification \"Claude Code 팀에서 주의가 필요합니다\" with title \"Agent Team\"' 2>/dev/null || notify-send 'Agent Team' '주의 필요' 2>/dev/null || true"
-          }
-        ]
-      }
     ]
   }
 }
@@ -237,25 +214,6 @@ Agent Teams 전용 Hook 이벤트:
 | `TeammateIdle` | 팀원이 유휴 상태가 되려 할 때 | 피드백을 보내고 팀원이 계속 작업하도록 유지 |
 | `TaskCreated` | 태스크가 생성될 때 | 태스크 생성을 차단하고 피드백 전송 |
 | `TaskCompleted` | 태스크가 완료 처리될 때 | 완료를 차단하고 피드백 전송 |
-
-### 세팅 완료 후 최종 파일 구조
-
-```
-~/.claude/
-├── settings.json              ← Agent Teams 활성화 + 권한 + (선택) Hooks
-├── agents/                    ← (선택) 재사용 에이전트 정의
-│   └── security-reviewer.md
-└── (teams/, tasks/는 팀 생성 시 자동 생성)
-
-~/.claude.json                 ← teammateMode 설정
-
-<your-project>/
-├── CLAUDE.md                  ← (선택) 팀원용 프로젝트 가이드라인
-└── .claude/
-    └── agents/                ← (선택) 프로젝트 전용 에이전트
-```
-
-이 상태에서 `claude`를 실행하고 에이전트 팀을 요청하면 바로 사용할 수 있다.
 
 ---
 
@@ -463,7 +421,7 @@ Wait for each wave to complete before starting the next.
 
 ### 1. 팀원에게 충분한 컨텍스트 제공
 
-팀원은 `CLAUDE.md`를 자동으로 로드하지만, **리더의 대화 기록은 상속하지 않는다.** 스폰 프롬프트에 작업 관련 세부 사항을 포함해야 한다. 리더에게 "지금까지 모은 중요한 코드 포인터를 태스크 설명에 포함시켜줘"라고 요청하는 것도 좋은 방법이다.
+팀원은 프로젝트 컨텍스트(`CLAUDE.md`, MCP 서버, 스킬)를 자동으로 로드하지만, **리더의 대화 기록은 상속하지 않는다.** 스폰 프롬프트에 작업 관련 세부 사항을 포함해야 한다.
 
 ### 2. 적절한 팀 규모: 3~5명
 
@@ -505,7 +463,7 @@ In-process 모드에서는 이미 실행 중이지만 보이지 않을 수 있�
 
 ### 권한 요청이 너무 많을 때
 
-팀원 스폰 전에 `settings.json`의 `permissions.allow`에 자주 쓰는 도구를 사전 승인해 둔다.
+팀원 스폰 전에 권한 설정에서 자주 사용하는 작업을 사전 승인해 둔다.
 
 ### 팀원이 에러로 멈출 때
 
@@ -535,7 +493,7 @@ tmux kill-session -t <session-name>
 | **중첩 팀 불가** | 팀원은 자체 팀이나 팀원을 스폰할 수 없다. |
 | **리더 고정** | 팀을 생성한 세션이 영구 리더이며, 이전이나 승격이 불가능하다. |
 | **스폰 시 권한 고정** | 모든 팀원이 리더의 권한 모드로 시작. 스폰 후 개별 변경은 가능. |
-| **Split-pane 제한** | VS Code 터미널, Windows Terminal, Ghostty 미지원. |
+| **Split-pane 제한** | 기본 in-process 모드는 모든 터미널에서 동작한다. Split-pane 모드는 VS Code 통합 터미널, Windows Terminal, Ghostty에서 지원되지 않는다. |
 
 > ✅ **CLAUDE.md는 정상 동작한다**: 팀원은 작업 디렉토리의 `CLAUDE.md`를 읽는다.
 
