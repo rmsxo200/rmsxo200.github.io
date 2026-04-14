@@ -7,7 +7,7 @@ categories:
   - ai
 ---
 
-# Claude Code Agent Teams: Sub-agents를 넘어선 멀티 에이전트 협업의 시작
+# Claude Code Agent Teams
 
 > Claude Code에 실험적 기능으로 도입된 Agent Teams는 여러 Claude Code 인스턴스가 하나의 팀처럼 협업하는 멀티 에이전트 오케스트레이션 시스템이다. 이 글에서는 공식 문서를 기반으로 Agent Teams의 개념, 구조, 세팅, 사용법, 그리고 Sub-agents로는 불가능한 실전 예제까지 하나의 글에서 모두 다룬다.
 
@@ -23,6 +23,36 @@ Agent Teams는 여러 개의 Claude Code 세션을 하나의 팀으로 묶어 �
 
 ---
 
+## 동작 구조
+
+```
+사용자
+  ↓
+팀 리더 (메인 Claude Code 세션)
+  │
+  │  팀 생성, 태스크 할당, 결과 종합
+  │
+  ├──► 팀원 A ◄──────► 팀원 B
+  │       │                │
+  │       │  직접 메시지    │
+  │       │  교환 가능      │
+  │       ▼                ▼
+  └──► 팀원 C ◄──────► 팀원 A, B
+  
+  ┌─────────────────────────────┐
+  │     공유 태스크 리스트         │
+  │  (pending → in progress     │
+  │   → completed)              │
+  │  + 메일박스 (에이전트 간 통신)  │
+  └─────────────────────────────┘
+```
+
+- 각 팀원은 **독립된 컨텍스트 윈도우**에서 작업한다.
+- 팀원끼리 **직접 메시지**를 주고받을 수 있다. 리더를 경유하지 않는다.
+- **공유 태스크 리스트**로 작업을 조율하고, 태스크 간 의존성도 자동 관리된다.
+
+--- 
+
 ## Sub-agents vs Agent Teams: 무엇이 다른가?
 
 둘 다 작업을 병렬화할 수 있지만, 근본적인 차이가 있다. **팀원들이 서로 소통할 필요가 있는지**를 기준으로 선택하면 된다.
@@ -35,8 +65,23 @@ Agent Teams는 여러 개의 Claude Code 세션을 하나의 팀으로 묶어 �
 | **적합한 작업** | 결과만 필요한 집중 작업 | 토론·협업이 필요한 복잡한 작업 |
 | **토큰 비용** | 낮음 (결과가 메인 컨텍스트로 요약) | 높음 (각 팀원이 별도 Claude 인스턴스) |
 
-한 줄로 요약하면, **Sub-agents는 "심부름꾼"이고 Agent Teams는 "협업 팀"** 이다. Sub-agents는 작업을 수행하고 결과만 돌려주지만, Agent Teams는 팀원끼리 발견 사항을 공유하고, 서로의 의견에 도전하며, 자율적으로 조율할 수 있다.
+```
+[ Sub-agents ]
+메인 ──► Sub-A ──► 결과 반환
+     ──► Sub-B ──► 결과 반환
+     ──► Sub-C ──► 결과 반환
+     (A, B, C는 서로 대화 불가)
 
+[ Agent Teams ]
+리더 ──► 팀원 A ◄──► 팀원 B
+     ──► 팀원 C ◄──► 팀원 A, B
+     (A, B, C가 서로 직접 대화)
+```
+
+> `Sub-agents`는 "심부름꾼", `Agent Teams`는 "협업 팀"이다.  
+> `Sub-agents`끼리는 대화할 수 없고 작업 수행 후 결과만 부모에게 돌려준다.  
+> `Agent Teams`는 여러 팀원이 동시에 문제의 다양한 측면을 조사하고, 서로의 결과를 공유하고 검증할 수 있다.  
+  
 참고로 Claude Code에는 Explore, Plan 등의 **빌트인 Sub-agents**가 이미 내장되어 있다. Sub-agents는 단일 세션 안에서 동작하고, Agent Teams는 별도의 세션들을 조율한다는 점이 구조적 차이다.
 
 ### 왜 Sub-agents로는 안 되는가?
@@ -495,7 +540,7 @@ tmux kill-session -t <session-name>
 | **스폰 시 권한 고정** | 모든 팀원이 리더의 권한 모드로 시작. 스폰 후 개별 변경은 가능. |
 | **Split-pane 제한** | 기본 in-process 모드는 모든 터미널에서 동작한다. Split-pane 모드는 VS Code 통합 터미널, Windows Terminal, Ghostty에서 지원되지 않는다. |
 
-> ✅ **CLAUDE.md는 정상 동작한다**: 팀원은 작업 디렉토리의 `CLAUDE.md`를 읽는다.
+> **CLAUDE.md는 정상 동작한다**: 팀원은 작업 디렉토리의 `CLAUDE.md`를 읽는다.
 
 ---
 
@@ -507,4 +552,5 @@ Agent Teams는 Claude Code의 활용 패러다임을 "단일 에이전트에게 
 
 ---
 
-*이 글은 [Claude Code 공식 문서 - Orchestrate teams of Claude Code sessions](https://code.claude.com/docs/en/agent-teams)를 기반으로 작성되었습니다. (2026년 4월 기준)*
+참고1 : <https://code.claude.com/docs/ko/agent-teams>  
+참고2 : <https://code.claude.com/docs/en/agent-teams>  
