@@ -230,10 +230,10 @@ claude
   // ⚙️ 환경 변수
   // ═══════════════════════════════════════
   "env": {
-    "DISABLE_BUG_COMMAND": "1",
-    "DISABLE_ERROR_REPORTING": "1",
-    "DISABLE_TELEMETRY": "1",
-    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
+    "DISABLE_BUG_COMMAND": "1",     // 피드백·버그 신고 비활성화
+    "DISABLE_ERROR_REPORTING": "1", // 에러 리포팅 비활성화
+    "DISABLE_TELEMETRY": "1",       // 텔레메트리 비활성화 — 사용 통계 수집 옵트아웃
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1" // 각 Bash 명령 실행 후 원래 프로젝트 작업 디렉터리로 되돌리기
   }
 }
 ```
